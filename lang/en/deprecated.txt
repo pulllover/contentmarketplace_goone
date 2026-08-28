@@ -1,0 +1,2 @@
+warningdisablemarketplace:yes,contentmarketplace_goone
+account,contentmarketplace_goone

@@ -1,0 +1,49 @@
+{
+    "total": 82137,
+    "hits": [],
+    "facets": {
+        "topics": [
+            {
+                "key": "Mock topic A",
+                "count": 10
+            },
+            {
+                "key": "Mock topic B",
+                "count": 11
+            },
+            {
+                "key": "Mock topic C",
+                "count": 12
+            },
+            {
+                "key": "Mock topic D",
+                "count": 13
+            },
+            {
+                "key": "Mock topic E",
+                "count": 14
+            }
+        ],
+        "language": [
+            {
+                "key": "en",
+                "count": 100
+            },
+            {
+                "key": "es",
+                "count": 20
+            },
+            {
+                "key": "ja",
+                "count": 5
+            }
+        ],
+        "providers": [
+            {
+                "key": 101,
+                "name": "Mock content provider",
+                "count": 50
+            }
+        ]
+    }
+}

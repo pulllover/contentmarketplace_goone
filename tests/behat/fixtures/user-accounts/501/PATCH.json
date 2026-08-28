@@ -1,0 +1,14 @@
+{
+    "id": 501,
+    "status": "active",
+    "roles": [
+        {
+            "guid": "rol_01G3PZS7NZ0CF95J340P55FSZH",
+            "name": "Learner"
+        },
+        {
+            "guid": "rol_01G3PZS7NXC78RP57SG0EXD0Z5",
+            "name": "Content administrator"
+        }
+    ]
+}

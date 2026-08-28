@@ -1,0 +1,34 @@
+{
+    "total": 54,
+    "hits": [
+        {
+            "id": 333,
+            "lo_id": 333,
+            "core": {
+                "title": "Filtered listing hit",
+                "description": "<p>Filtered</p>",
+                "type": "course",
+                "image": {
+                    "value": ""
+                },
+                "provider_id": 101
+            },
+            "provider": {
+                "name": "Mock content provider"
+            },
+            "relevance": {
+                "duration": 15,
+                "language": "en"
+            },
+            "playback_behavior": {
+                "assessable": false
+            },
+            "pricing": {
+                "currency": "AUD",
+                "price": 0,
+                "tax": 0,
+                "tax_included": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{{!
+   This file is part of Totara Learn
+
+   Copyright (C) 2018 onwards Totara Learning Solutions LTD
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See  the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   @package contentmarketplace_goone
+}}
+
+<div id="go1syncresult" style="display:none;">
+    <div class="alert alert-danger alert-with-icon  fade in " role="alert">
+        <div class="alert-icon"><span aria-hidden="true" data-flex-icon="core|notification-error"
+        class="flex-icon ft-fw ft tfont-var-x-circle-fill ft-size-200"
+        ></span></div>
+        <div class="alert-message"></div>
+    </div>
+</div>
+
+<div class="singlebutton">
+    <form method="post" action="{{ button_url }}" id="go1syncbutton">
+        <div>
+        <input type="submit" value="{{#str}} synccontent, contentmarketplace_goone {{/str}}" id="single_buttongo1sync" />
+        <input type="hidden" name="sesskey" value="{{ sesskey }}" />
+        </div>
+    </form>
+</div>
+
+<iframe id="go1-content-hub-go1embed"
+    src="https://embedding.go1.com/content-hub?one_time_token={{ ott }}"
+    style="width: 100%; height: 100%; border: 0px; min-height:800px;">
+</iframe>
+
+{{#js}}
+    require(['contentmarketplace_goone/sync_content'], function(sync_content) {
+        sync_content.init("#single_buttongo1sync");
+    });
+{{/js}}

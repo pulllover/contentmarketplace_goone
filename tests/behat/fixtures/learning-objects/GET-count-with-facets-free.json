@@ -1,0 +1,52 @@
+{
+    "total": 17052,
+    "hits": [],
+    "facets": {
+        "topics": [
+            {
+                "key": "Mock topic A",
+                "count": 40
+            },
+            {
+                "key": "Mock topic F",
+                "count": 6
+            }
+        ],
+        "language": [
+            {
+                "key": "en",
+                "count": 15000
+            },
+            {
+                "key": "fr",
+                "count": 30
+            }
+        ],
+        "providers": [
+            {
+                "key": 202,
+                "name": "Chart Learning Solutions",
+                "count": 260
+            },
+            {
+                "key": 336331,
+                "name": "",
+                "count": 96
+            },
+            {
+                "key": 336348,
+                "count": 86
+            },
+            {
+                "key": 101,
+                "name": "Mock content provider",
+                "count": 7
+            },
+            {
+                "key": 203,
+                "name": "LearningPlanet",
+                "count": 5
+            }
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "id": 501,
+    "status": "active",
+    "user": {
+        "id": "usr_00000000000000000000000501",
+        "email": "learner501@example.com",
+        "given_name": "Lea",
+        "family_name": "Rner"
+    },
+    "roles": [
+        {
+            "guid": "rol_01G3PZS7NZ0CF95J340P55FSZH",
+            "name": "Learner"
+        }
+    ],
+    "standard_fields": {},
+    "additional_fields": {}
+}

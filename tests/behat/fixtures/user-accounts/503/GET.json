@@ -1,0 +1,18 @@
+{
+    "id": 503,
+    "status": "active",
+    "user": {
+        "id": "usr_00000000000000000000000503",
+        "email": "contentadmin503@example.com",
+        "given_name": "Content",
+        "family_name": "Admin"
+    },
+    "roles": [
+        {
+            "guid": "rol_01G3PZS7NXC78RP57SG0EXD0Z5",
+            "name": "Content administrator"
+        }
+    ],
+    "standard_fields": {},
+    "additional_fields": {}
+}

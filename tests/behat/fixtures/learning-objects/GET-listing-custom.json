@@ -1,0 +1,1541 @@
+{
+ "total": 82137,
+ "hits": [
+  {
+   "id": 29271,
+   "core": {
+    "title": "Mocked learning object 29271",
+    "description": "<p>Mocked description for learning object 29271.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 29271
+  },
+  {
+   "id": 1868492,
+   "core": {
+    "title": "Mocked learning object 1868492",
+    "description": "<p>Mocked description for learning object 1868492.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 1868492
+  },
+  {
+   "id": 1873868,
+   "core": {
+    "title": "Mocked learning object 1873868",
+    "description": "<p>Mocked description for learning object 1873868.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 1873868
+  },
+  {
+   "id": 1881379,
+   "core": {
+    "title": "Mocked learning object 1881379",
+    "description": "<p>Mocked description for learning object 1881379.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 1881379
+  },
+  {
+   "id": 1916572,
+   "core": {
+    "title": "Mocked learning object 1916572",
+    "description": "<p>Mocked description for learning object 1916572.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 1916572
+  },
+  {
+   "id": 800001,
+   "core": {
+    "title": "Mocked learning object 800001",
+    "description": "<p>Mocked description for learning object 800001.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800001
+  },
+  {
+   "id": 800002,
+   "core": {
+    "title": "Mocked learning object 800002",
+    "description": "<p>Mocked description for learning object 800002.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800002
+  },
+  {
+   "id": 800003,
+   "core": {
+    "title": "Mocked learning object 800003",
+    "description": "<p>Mocked description for learning object 800003.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800003
+  },
+  {
+   "id": 800004,
+   "core": {
+    "title": "Mocked learning object 800004",
+    "description": "<p>Mocked description for learning object 800004.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800004
+  },
+  {
+   "id": 800005,
+   "core": {
+    "title": "Mocked learning object 800005",
+    "description": "<p>Mocked description for learning object 800005.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800005
+  },
+  {
+   "id": 800006,
+   "core": {
+    "title": "Mocked learning object 800006",
+    "description": "<p>Mocked description for learning object 800006.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800006
+  },
+  {
+   "id": 800007,
+   "core": {
+    "title": "Mocked learning object 800007",
+    "description": "<p>Mocked description for learning object 800007.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800007
+  },
+  {
+   "id": 800008,
+   "core": {
+    "title": "Mocked learning object 800008",
+    "description": "<p>Mocked description for learning object 800008.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800008
+  },
+  {
+   "id": 800009,
+   "core": {
+    "title": "Mocked learning object 800009",
+    "description": "<p>Mocked description for learning object 800009.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800009
+  },
+  {
+   "id": 800010,
+   "core": {
+    "title": "Mocked learning object 800010",
+    "description": "<p>Mocked description for learning object 800010.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800010
+  },
+  {
+   "id": 800011,
+   "core": {
+    "title": "Mocked learning object 800011",
+    "description": "<p>Mocked description for learning object 800011.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800011
+  },
+  {
+   "id": 800012,
+   "core": {
+    "title": "Mocked learning object 800012",
+    "description": "<p>Mocked description for learning object 800012.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800012
+  },
+  {
+   "id": 800013,
+   "core": {
+    "title": "Mocked learning object 800013",
+    "description": "<p>Mocked description for learning object 800013.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800013
+  },
+  {
+   "id": 800014,
+   "core": {
+    "title": "Mocked learning object 800014",
+    "description": "<p>Mocked description for learning object 800014.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800014
+  },
+  {
+   "id": 800015,
+   "core": {
+    "title": "Mocked learning object 800015",
+    "description": "<p>Mocked description for learning object 800015.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800015
+  },
+  {
+   "id": 800016,
+   "core": {
+    "title": "Mocked learning object 800016",
+    "description": "<p>Mocked description for learning object 800016.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800016
+  },
+  {
+   "id": 800017,
+   "core": {
+    "title": "Mocked learning object 800017",
+    "description": "<p>Mocked description for learning object 800017.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800017
+  },
+  {
+   "id": 800018,
+   "core": {
+    "title": "Mocked learning object 800018",
+    "description": "<p>Mocked description for learning object 800018.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800018
+  },
+  {
+   "id": 800019,
+   "core": {
+    "title": "Mocked learning object 800019",
+    "description": "<p>Mocked description for learning object 800019.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800019
+  },
+  {
+   "id": 800020,
+   "core": {
+    "title": "Mocked learning object 800020",
+    "description": "<p>Mocked description for learning object 800020.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800020
+  },
+  {
+   "id": 800021,
+   "core": {
+    "title": "Mocked learning object 800021",
+    "description": "<p>Mocked description for learning object 800021.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800021
+  },
+  {
+   "id": 800022,
+   "core": {
+    "title": "Mocked learning object 800022",
+    "description": "<p>Mocked description for learning object 800022.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800022
+  },
+  {
+   "id": 800023,
+   "core": {
+    "title": "Mocked learning object 800023",
+    "description": "<p>Mocked description for learning object 800023.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800023
+  },
+  {
+   "id": 800024,
+   "core": {
+    "title": "Mocked learning object 800024",
+    "description": "<p>Mocked description for learning object 800024.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800024
+  },
+  {
+   "id": 800025,
+   "core": {
+    "title": "Mocked learning object 800025",
+    "description": "<p>Mocked description for learning object 800025.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800025
+  },
+  {
+   "id": 800026,
+   "core": {
+    "title": "Mocked learning object 800026",
+    "description": "<p>Mocked description for learning object 800026.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800026
+  },
+  {
+   "id": 800027,
+   "core": {
+    "title": "Mocked learning object 800027",
+    "description": "<p>Mocked description for learning object 800027.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800027
+  },
+  {
+   "id": 800028,
+   "core": {
+    "title": "Mocked learning object 800028",
+    "description": "<p>Mocked description for learning object 800028.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800028
+  },
+  {
+   "id": 800029,
+   "core": {
+    "title": "Mocked learning object 800029",
+    "description": "<p>Mocked description for learning object 800029.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800029
+  },
+  {
+   "id": 800030,
+   "core": {
+    "title": "Mocked learning object 800030",
+    "description": "<p>Mocked description for learning object 800030.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800030
+  },
+  {
+   "id": 800031,
+   "core": {
+    "title": "Mocked learning object 800031",
+    "description": "<p>Mocked description for learning object 800031.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800031
+  },
+  {
+   "id": 800032,
+   "core": {
+    "title": "Mocked learning object 800032",
+    "description": "<p>Mocked description for learning object 800032.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800032
+  },
+  {
+   "id": 800033,
+   "core": {
+    "title": "Mocked learning object 800033",
+    "description": "<p>Mocked description for learning object 800033.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800033
+  },
+  {
+   "id": 800034,
+   "core": {
+    "title": "Mocked learning object 800034",
+    "description": "<p>Mocked description for learning object 800034.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800034
+  },
+  {
+   "id": 800035,
+   "core": {
+    "title": "Mocked learning object 800035",
+    "description": "<p>Mocked description for learning object 800035.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800035
+  },
+  {
+   "id": 800036,
+   "core": {
+    "title": "Mocked learning object 800036",
+    "description": "<p>Mocked description for learning object 800036.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800036
+  },
+  {
+   "id": 800037,
+   "core": {
+    "title": "Mocked learning object 800037",
+    "description": "<p>Mocked description for learning object 800037.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800037
+  },
+  {
+   "id": 800038,
+   "core": {
+    "title": "Mocked learning object 800038",
+    "description": "<p>Mocked description for learning object 800038.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800038
+  },
+  {
+   "id": 800039,
+   "core": {
+    "title": "Mocked learning object 800039",
+    "description": "<p>Mocked description for learning object 800039.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800039
+  },
+  {
+   "id": 800040,
+   "core": {
+    "title": "Mocked learning object 800040",
+    "description": "<p>Mocked description for learning object 800040.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800040
+  },
+  {
+   "id": 800041,
+   "core": {
+    "title": "Mocked learning object 800041",
+    "description": "<p>Mocked description for learning object 800041.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800041
+  },
+  {
+   "id": 800042,
+   "core": {
+    "title": "Mocked learning object 800042",
+    "description": "<p>Mocked description for learning object 800042.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800042
+  },
+  {
+   "id": 800043,
+   "core": {
+    "title": "Mocked learning object 800043",
+    "description": "<p>Mocked description for learning object 800043.</p>",
+    "type": "course",
+    "image": {
+     "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+    },
+    "provider_id": 101,
+    "language": "en"
+   },
+   "provider": {
+    "name": "Mock content provider",
+    "logo": ""
+   },
+   "relevance": {
+    "duration": 45,
+    "language": "en"
+   },
+   "playback_behavior": {
+    "assessable": false,
+    "mobile_friendly": true
+   },
+   "pricing": {
+    "currency": "AUD",
+    "price": 0,
+    "tax": 0,
+    "tax_included": true
+   },
+   "lo_id": 800043
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "id": 1881379,
+ "title": "Mocked learning object 1881379",
+ "description": "<p>Mocked description for learning object 1881379.</p>",
+ "type": "course",
+ "language": "en",
+ "image": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg",
+ "created_time": "2018-01-01T00:00:00+0000",
+ "updated_time": "2018-01-01T00:00:00+0000",
+ "assessable": false,
+ "items_count": 1,
+ "items": [],
+ "collections": [],
+ "portal_collection": [],
+ "delivery": {
+  "mode": "self-paced",
+  "duration": 45
+ },
+ "tags": [
+  "Mock tag"
+ ],
+ "pricing": {
+  "currency": "AUD",
+  "price": 0,
+  "tax": 0,
+  "tax_included": true
+ },
+ "provider": {
+  "name": "Mock content provider",
+  "logo": ""
+ },
+ "core": {
+  "title": "Mocked learning object 1881379",
+  "description": "<p>Mocked description for learning object 1881379.</p>",
+  "type": "course",
+  "image": {
+   "value": "/totara/contentmarketplace/contentmarketplaces/goone/tests/behat/fixtures/image.jpg"
+  },
+  "provider_id": 101,
+  "language": "en"
+ },
+ "relevance": {
+  "duration": 45,
+  "language": "en"
+ },
+ "playback_behavior": {
+  "assessable": false,
+  "mobile_friendly": true
+ }
+}

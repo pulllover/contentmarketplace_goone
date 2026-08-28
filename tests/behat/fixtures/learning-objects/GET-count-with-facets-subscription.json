@@ -1,0 +1,38 @@
+{
+    "total": 108700,
+    "hits": [],
+    "facets": {
+        "topics": [
+            {
+                "key": "Mock topic A",
+                "count": 500
+            },
+            {
+                "key": "Mock topic G",
+                "count": 100
+            }
+        ],
+        "language": [
+            {
+                "key": "en",
+                "count": 100000
+            },
+            {
+                "key": "de",
+                "count": 200
+            }
+        ],
+        "providers": [
+            {
+                "key": 203,
+                "name": "LearningPlanet",
+                "count": 615
+            },
+            {
+                "key": 204,
+                "name": "Subscription provider",
+                "count": 10
+            }
+        ]
+    }
+}

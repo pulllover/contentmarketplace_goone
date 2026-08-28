@@ -1,0 +1,35 @@
+{
+ "total": 2,
+ "hits": [
+  {
+   "id": 111,
+   "lo_id": 111,
+   "core": {
+    "title": "Small listing one",
+    "description": "<p>First</p>",
+    "type": "course",
+    "image": {"value": ""},
+    "provider_id": 101
+   },
+   "provider": {"name": "Provider 101"},
+   "relevance": {"duration": 10, "language": "en"},
+   "playback_behavior": {"assessable": false},
+   "pricing": {"currency": "AUD", "price": 0, "tax": 0, "tax_included": true}
+  },
+  {
+   "id": 222,
+   "lo_id": 222,
+   "core": {
+    "title": "Small listing two",
+    "description": "<p>Second</p>",
+    "type": "course",
+    "image": {"value": ""},
+    "provider_id": 102
+   },
+   "provider": {"name": "Provider 102"},
+   "relevance": {"duration": 20, "language": "en"},
+   "playback_behavior": {"assessable": true},
+   "pricing": {"currency": "AUD", "price": 0, "tax": 0, "tax_included": true}
+  }
+ ]
+}

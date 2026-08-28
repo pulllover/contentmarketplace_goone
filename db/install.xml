@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="totara/contentmarketplace/contentmarketplaces/goone/db" VERSION="20260827" COMMENT="XMLDB file for Go1 integration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="marketplace_goone_learning_object" COMMENT="Stores the learning assets from Go1 locally">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="external_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The learning object ID of the Go1 course"/>
+        <FIELD NAME="retired_time" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Date/time the LO is due for decommission"/>
+        <FIELD NAME="retired_actioned" TYPE="char" LENGTH="255" NOTNULL="false" COMMENT="Comma delimited list of actions undertaken when LO was retired (marked for decommission)"/>
+        <FIELD NAME="removed_time" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Date/time the LO is due for removal"/>
+        <FIELD NAME="removed_actioned" TYPE="char" LENGTH="255" NOTNULL="false" COMMENT="Comma delimited list of actions undertaken when LO was removed"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="external_id_index" UNIQUE="true" FIELDS="external_id"/>
+      </INDEXES>
+    </TABLE>
+
+    <TABLE NAME="marketplace_goone_user_map" COMMENT="Maps Totara userid to Go1 user id">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="LMS userid"/>
+        <FIELD NAME="goone_userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Go1 userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid_fk" TYPE="foreign-unique" FIELDS="userid" REFTABLE="user" REFFIELDS="id" ONDELETE="cascade"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="marketplace_goone_webhook_logs" COMMENT="Webhook Logs">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="message" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+  </TABLES>
+</XMLDB>

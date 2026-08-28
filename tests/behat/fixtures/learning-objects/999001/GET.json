@@ -1,0 +1,9 @@
+{
+    "id": 999001,
+    "type": "course",
+    "core": {
+        "title": "Learning object without an image",
+        "description": "<p>This mocked learning object deliberately has no image and no relevance data.</p>",
+        "type": "course"
+    }
+}
