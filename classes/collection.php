@@ -31,10 +31,10 @@ defined('MOODLE_INTERNAL') || die();
 final class collection extends \totara_contentmarketplace\local\contentmarketplace\collection {
 
     /**
-     * @param string $id The collection ID
+     * @param string $id Content availability option, defaulting to the curated collection.
      * @return array
      */
-    public function get($id = 'default'): array {
+    public function get($id = 'custom'): array {
         $api = new api();
         return $api->list_ids_for_all_learning_objects(['collection' => $id]);
     }

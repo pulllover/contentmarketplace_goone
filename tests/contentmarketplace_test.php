@@ -92,6 +92,10 @@ class contentmarketplace_goone_contentmarketplace_test extends testcase {
 
         $url = $marketplace->settings_url('content_sync');
         self::assertSame('content_sync', $url->param('tab'));
+
+        $url = $marketplace->settings_url('content_settings');
+        self::assertStringContainsString('/totara/contentmarketplace/contentmarketplaces/goone/curate.php', $url->out(false));
+        self::assertSame('contentmarketplaces', $url->param('returnto'));
     }
 
     public function test_get_region_options(): void {

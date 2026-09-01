@@ -222,7 +222,7 @@ class sync_learning_objects extends sync_action {
                 'provider',
                 'topics'
             ];
-            $params['state'] = 'published';
+            $params['state'] = ['published'];
             $params['type'] = ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'];
             $content_regions = $this->config->get('content_regions');
             if (!empty($content_regions)) {
@@ -284,7 +284,7 @@ class sync_learning_objects extends sync_action {
         if (!empty($total)) {
             for ($page = 0; $page < $api::MAX_AVAILABLE_RESULTS/$api::MAX_PAGE_SIZE; $page += 1) {
                 $params['collection'] = $collection;
-                $params['state'] = 'retired';
+                $params['state'] = ['retired'];
                 $params['offset'] = $page * $api::MAX_PAGE_SIZE;
                 $params['limit'] = $api::MAX_PAGE_SIZE;
                 $params['include'] = [

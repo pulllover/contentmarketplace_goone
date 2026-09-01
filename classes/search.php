@@ -260,6 +260,7 @@ final class search extends \totara_contentmarketplace\local\contentmarketplace\s
      * @return array
      */
     public function availability_query($selection) {
+        // A content availability option; api::collection_scope() turns it into an API collection scope.
         $query = ['collection' => $selection];
         return $query;
     }

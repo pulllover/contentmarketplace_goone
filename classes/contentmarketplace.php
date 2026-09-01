@@ -239,6 +239,13 @@ final class contentmarketplace extends \totara_contentmarketplace\local\contentm
      * @return \moodle_url
      */
     public function settings_url($tab = null) {
+        if ($tab === 'content_settings') {
+            return new \moodle_url(
+                "/totara/contentmarketplace/contentmarketplaces/goone/curate.php",
+                ['returnto' => 'contentmarketplaces']
+            );
+        }
+
         $url = new \moodle_url("/totara/contentmarketplace/contentmarketplaces/goone/config.php");
 
         if (!empty($tab)) {

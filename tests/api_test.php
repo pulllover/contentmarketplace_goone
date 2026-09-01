@@ -21,6 +21,7 @@
  */
 
 use contentmarketplace_goone\api;
+use contentmarketplace_goone\contentmarketplace;
 use contentmarketplace_goone\mock_config_storage;
 use contentmarketplace_goone\mock_playback_curl;
 use contentmarketplace_goone\oauth;
@@ -172,9 +173,46 @@ class contentmarketplace_goone_api_test extends testcase {
         self::assertSame(42, $facets->providers[0]->key);
     }
 
+    public function test_collection_scope_translates_availability_options(): void {
+        // Every content availability option resolves to a collection scope.
+        foreach (contentmarketplace::$available_collections[contentmarketplace::CONTENT_AVAILABILITY_ADD] as $option) {
+            self::assertArrayHasKey($option, api::$collection_scopes);
+            self::assertSame(api::$collection_scopes[$option], api::collection_scope($option));
+        }
+        // A scope named as the API names it is passed through unchanged.
+        self::assertSame('library', api::collection_scope('library'));
+        self::assertSame('not_added_to_library', api::collection_scope('not_added_to_library'));
+    }
+
+    public function test_get_learning_objects_sends_the_collection_scope(): void {
+        $curl = new mock_playback_curl($this);
+        // Only the scope is recorded, so a request carrying the option name finds no response.
+        $params = [
+            'collection' => 'library',
+            'type' => ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'],
+        ];
+        $url = api::ENDPOINT . '/learning-objects?' . http_build_query($params, '', '&');
+        $curl->record(
+            $url,
+            $this->expected_get_options(),
+            ['url' => $url, 'http_code' => 200, 'content_type' => 'application/json'],
+            '{"total": 1, "hits": []}'
+        );
+        $api = $this->make_api_with_playback_curl($curl);
+
+        $scopes = api::$collection_scopes;
+        api::$collection_scopes = ['option_under_test' => 'library'];
+        try {
+            $total = $api->get_learning_objects(['collection' => 'option_under_test'])->total;
+        } finally {
+            api::$collection_scopes = $scopes;
+        }
+        self::assertSame(1, (int) $total);
+    }
+
     public function test_collection_count_retired_is_not_cached(): void {
         $curl = new mock_playback_curl($this);
-        $params = ['collection' => 'free', 'state' => 'retired'];
+        $params = ['collection' => 'free', 'state' => ['retired']];
         $url = api::ENDPOINT . '/learning-objects?' . http_build_query($params, '', '&');
         $info = ['url' => $url, 'http_code' => 200, 'content_type' => 'application/json'];
         $curl->record($url, $this->expected_get_options(), $info, '{"total": 7}');

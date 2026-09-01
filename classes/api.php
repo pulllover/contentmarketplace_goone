@@ -49,6 +49,24 @@ final class api {
         'Administrator' => 'rol_01G3PZS7NCBKB170TEP3CC2BBH'
     ];
 
+    /**
+     * Maps a content availability option to the collection scope sent to the API.
+     *
+     * The keys are the plugin's own option names, held in the content access and
+     * content sync settings; the values go out as the `collection` query parameter.
+     *
+     * The API accepts `free` and `custom`, but the published enum for API version
+     * 2025-01-01 lists only `library`, `not_added_to_library`, `partner_content`
+     * and `subscribe`. `library` is the documented equivalent of `custom`; `free`
+     * has no documented equivalent, as the API offers no price filter. Should the
+     * undocumented values be withdrawn, this table is the only place to change.
+     */
+    public static $collection_scopes = [
+        'free' => 'free',
+        'subscribe' => 'subscribe',
+        'custom' => 'custom',
+    ];
+
     /** @var oauth_rest_client */
     private $client;
 
@@ -144,11 +162,39 @@ final class api {
 
 
     /**
+     * Translate a content availability option into the collection scope the API expects.
+     *
+     * Options with no entry in self::$collection_scopes are passed through, so a
+     * scope named as the API names it can be given directly.
+     *
+     * @param string $collection Content availability option, or an API collection scope.
+     * @return string Collection scope for the `collection` query parameter.
+     */
+    public static function collection_scope(string $collection): string {
+        return self::$collection_scopes[$collection] ?? $collection;
+    }
+
+    /**
+     * Translate the collection in a set of query parameters, when one is present.
+     *
+     * @param array $params Query parameters.
+     * @return array Query parameters holding an API collection scope.
+     */
+    private static function apply_collection_scope(array $params): array {
+        if (isset($params['collection'])) {
+            $params['collection'] = self::collection_scope((string)$params['collection']);
+        }
+        return $params;
+    }
+
+    /**
      * Perform a search for matching learning objects via API.
      * @param  array $params Search parameters
      * @return object         Data returned from API
      */
     public function get_learning_objects(array $params = []) {
+
+        $params = self::apply_collection_scope($params);
 
         if (!isset($params['type'])) {
             $params['type'] = ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'];
@@ -172,9 +218,8 @@ final class api {
      * @return int The total number of all packages for this account
      */
     public function get_learning_objects_total_count(array $params = []) {
-        unset($params["subscribe"]);
-        unset($params["custom"]);
-        $params["limit"] = 0;
+        // Only the total is of interest here, so the smallest page the API accepts is requested.
+        $params['limit'] = 1;
         $params['type'] = ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'];
         $cachekey = 'collection_count_total';
         $data = $this->get_cached_value($cachekey);
@@ -194,7 +239,7 @@ final class api {
         }
         $params = [];
         $params['type'] = ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'];
-        $params['collection'] = $collection;
+        $params['collection'] = self::collection_scope($collection);
         $data = $this->client->get('learning-objects', $params);
         $total = !empty($data->total) ? intval($data->total) : 0;
         $result = $this->set_cached_value($cachekey, $total, self::CACHE_VALIDITY_COLLECTION_COUNT);
@@ -229,7 +274,10 @@ final class api {
     }
 
     public function get_learning_objects_collection_count_retired(string $collection) :int {
-        $data = $this->client->get('learning-objects', ['collection' => $collection, 'state' => 'retired']);
+        $data = $this->client->get('learning-objects', [
+            'collection' => self::collection_scope($collection),
+            'state' => ['retired'],
+        ]);
         return !empty($data->total) ? intval($data->total) : 0;
     }
 
