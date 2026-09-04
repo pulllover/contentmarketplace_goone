@@ -25,6 +25,7 @@ namespace contentmarketplace_goone\controllers;
 
 defined('MOODLE_INTERNAL') || die();
 
+use context_system;
 use totara_contentmarketplace\controllers\catalog_import as base_catalog_import;
 use totara_contentmarketplace\views\override_catalog_import_nav_breadcrumbs;
 use totara_mvc\view;
@@ -57,6 +58,18 @@ final class catalog_import extends base_catalog_import {
             $section_id = $this->section_id;
         }
         return $section_id;
+    }
+
+    /**
+     * The core nav override uses this result solely to decide whether to show the
+     * "Manage available content" button. For Go1 that button leads to curate.php, which
+     * requires contentmarketplace/goone:curatecontent in the system context, so the same
+     * check is used here.
+     *
+     * @return bool
+     */
+    public function can_manage_marketplace_plugins(): bool {
+        return has_capability('contentmarketplace/goone:curatecontent', context_system::instance());
     }
 
 }

@@ -147,5 +147,13 @@ function xmldb_contentmarketplace_goone_upgrade($oldversion) {
     }
 
 
+    if ($oldversion < 2026090400) {
+        // Go1 SCORMs in single activity courses skip the view page on first access only.
+        contentmarketplace_goone_fix_single_activity_skipview();
+
+        // Goone savepoint reached.
+        upgrade_plugin_savepoint(true, 2026090400, 'contentmarketplace', 'goone');
+    }
+
     return true;
 }

@@ -21,6 +21,7 @@
  */
 
 use contentmarketplace_goone\helper;
+use core\orm\query\builder;
 use core_phpunit\testcase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -313,5 +314,54 @@ class contentmarketplace_goone_helper_test extends testcase {
         // Move action with a target category is configured.
         set_config('retired_content_actions_move_category', 2, 'contentmarketplace_goone');
         self::assertTrue(helper::is_retired_content_on_and_configured());
+    }
+
+    public function test_apply_course_completion_defaults_sets_completion_fields(): void {
+        $coursedata = new stdClass();
+        $coursedata->fullname = 'Kept as is';
+
+        helper::apply_course_completion_defaults($coursedata);
+
+        self::assertSame(COMPLETION_ENABLED, $coursedata->enablecompletion);
+        self::assertSame(1, $coursedata->completionstartonenrol);
+        self::assertSame(1, $coursedata->completionprogressonview);
+        // Existing fields are untouched.
+        self::assertSame('Kept as is', $coursedata->fullname);
+    }
+
+    public function test_set_single_activity_completion_creates_criterion_and_aggregations(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/completionlib.php');
+        self::setAdminUser();
+
+        $generator = self::getDataGenerator();
+        $course = $generator->create_course(['enablecompletion' => COMPLETION_ENABLED]);
+        $module = $generator->create_module('page', ['course' => $course->id]);
+
+        helper::set_single_activity_completion($course, (int) $module->cmid);
+
+        // Exactly one criterion, of activity type, pointing at the module.
+        $criteria = builder::table('course_completion_criteria')->where('course', $course->id)->get()->all();
+        self::assertCount(1, $criteria);
+        $criterion = reset($criteria);
+        self::assertEquals(COMPLETION_CRITERIA_TYPE_ACTIVITY, $criterion->criteriatype);
+        self::assertEquals($module->cmid, $criterion->moduleinstance);
+        self::assertSame('page', $criterion->module);
+
+        // Overall aggregation: all criteria required.
+        $overall = builder::table('course_completion_aggr_methd')
+            ->where('course', $course->id)
+            ->where_null('criteriatype')
+            ->one();
+        self::assertNotNull($overall);
+        self::assertEquals(COMPLETION_AGGREGATION_ALL, $overall->method);
+
+        // Activity aggregation: all activities required.
+        $activity = builder::table('course_completion_aggr_methd')
+            ->where('course', $course->id)
+            ->where('criteriatype', COMPLETION_CRITERIA_TYPE_ACTIVITY)
+            ->one();
+        self::assertNotNull($activity);
+        self::assertEquals(COMPLETION_AGGREGATION_ALL, $activity->method);
     }
 }

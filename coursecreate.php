@@ -98,9 +98,7 @@ if ($form->is_cancelled()) {
         $coursedata->shortname = $data->{'shortname' . $suffix};
         $coursedata->visible = true;
         $coursedata->audiencevisible = (int) get_config('moodlecourse', 'visiblelearning');
-
-        $coursedata->enablecompletion = COMPLETION_ENABLED;
-        $coursedata->completionstartonenrol = 1;
+        helper::apply_course_completion_defaults($coursedata);
 
         if ($data->create == create_course_form::CREATE_COURSE_SINGLE_ACTIVITY) {
             $coursedata->format = 'singleactivity';
@@ -128,7 +126,12 @@ if ($form->is_cancelled()) {
             $descriptionhtml = clean_text((string) ($learningobject->core->description ?? ''));
 
             $learning_object_model = learning_object::load_by_external_id($id, $api);
-            helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, $section, $learning_object_model, $api);
+            $module = helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, $section, $learning_object_model, $api);
+
+            // A single activity course completes when its one SCORM activity completes.
+            if ($data->create == create_course_form::CREATE_COURSE_SINGLE_ACTIVITY) {
+                helper::set_single_activity_completion($course, $module->get_id());
+            }
         }
 
         \core\notification::success(get_string('coursecreated', 'contentmarketplace_goone'));
@@ -153,9 +156,7 @@ if ($form->is_cancelled()) {
             $coursedata->shortname = $data->{'shortname_' . $id};
             $coursedata->visible = true;
             $coursedata->audiencevisible = (int) get_config('moodlecourse', 'visiblelearning');
-
-            $coursedata->enablecompletion = COMPLETION_ENABLED;
-            $coursedata->completionstartonenrol = 1;
+            helper::apply_course_completion_defaults($coursedata);
 
             $coursedata->format = 'singleactivity';
             $coursedata->activitytype = 'scorm';
@@ -173,7 +174,10 @@ if ($form->is_cancelled()) {
             }
 
             $learning_object_model = learning_object::load_by_external_id($id, $api);
-            helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, 0, $learning_object_model, $api);
+            $module = helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, 0, $learning_object_model, $api);
+
+            // A single activity course completes when its one SCORM activity completes.
+            helper::set_single_activity_completion($course, $module->get_id());
 
             $courselinkshtml[] = s($coursedata->fullname);
         }

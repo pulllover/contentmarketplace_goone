@@ -47,15 +47,7 @@
 }}
 <div>
     <div class="tcm-goone-search-thumbnail-img" style="background-image: url('{{ image }}');">
-        {{#multipleselect}}
-        <div class="tcm-thumbnail_selection">
-            <input type="checkbox" id="selection-{{id}}" value="{{id}}"/>
-            <label for="selection-{{id}}"><span class="sr-only">{{selectlabel}}</span></label>
-        </div>
-        {{/multipleselect}}
-        {{^multipleselect}}
-            <input type="hidden" id="selection-{{id}}" value="{{id}}"/>
-        {{/multipleselect}}
+        <input type="hidden" id="selection-{{id}}" value="{{id}}"/>
     </div>
     <div class="tcm-goone-search-metadata">
         <div  class="tcm-goone-search-description">

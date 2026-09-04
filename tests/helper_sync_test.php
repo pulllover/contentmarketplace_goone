@@ -107,6 +107,8 @@ class contentmarketplace_goone_helper_sync_test extends testcase {
         self::assertEquals($category->id, $course->category);
         self::assertSame('singleactivity', $course->format);
         self::assertEquals(1, $course->enablecompletion);
+        self::assertEquals(1, $course->completionstartonenrol);
+        self::assertEquals(1, $course->completionprogressonview);
         self::assertSame('Responding to Seizures', $course->fullname);
         self::assertStringContainsString('Test Provider', $course->summary);
 
@@ -163,5 +165,33 @@ class contentmarketplace_goone_helper_sync_test extends testcase {
         self::assertSame('SCORM activity already exists in the sync category', $second['message']);
 
         self::assertSame(1, builder::table('course')->where('shortname', 'goone_29271')->count());
+    }
+
+    public function test_single_activity_course_scorm_skips_view_on_first_access_only(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/mod/scorm/locallib.php');
+        $category = self::getDataGenerator()->create_category();
+        $this->configure_sync($category->id, helper::CREATE_COURSE_SINGLE);
+
+        self::assertTrue(helper::create_course_from_learning_object($this->make_hit(), generator::instance()->get_mock_api()));
+
+        $course = builder::table('course')->where('shortname', 'goone_29271')->one();
+        $scorm = builder::table('scorm')->where('course', $course->id)->one();
+        // Single activity courses have no course page to return to when the SCORM pop-up closes,
+        // so skipping the view page on every visit would relaunch the pop-up in a loop.
+        self::assertEquals(SCORM_SKIPVIEW_FIRST, $scorm->skipview);
+    }
+
+    public function test_multi_activity_course_scorm_always_skips_view(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/mod/scorm/locallib.php');
+        $category = self::getDataGenerator()->create_category();
+        $this->configure_sync($category->id, helper::CREATE_COURSE_MULTI, 'fullname');
+
+        self::assertTrue(helper::create_course_from_learning_object($this->make_hit(), generator::instance()->get_mock_api()));
+
+        $course = builder::table('course')->where('fullname', 'Responding to Seizures')->one();
+        $scorm = builder::table('scorm')->where('course', $course->id)->one();
+        self::assertEquals(SCORM_SKIPVIEW_ALWAYS, $scorm->skipview);
     }
 }

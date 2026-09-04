@@ -54,6 +54,15 @@ class contentmarketplace_goone_webhook_test extends \core_phpunit\testcase {
         self::assertSame('', webhook::verify_signature($body, $header, $secret));
     }
 
+    public function test_valid_millisecond_timestamp_is_accepted(): void {
+        $body = '{"event_type":"enrollment.complete"}';
+        $secret = 'shhh-secret';
+        // Go1 may send the timestamp in milliseconds rather than seconds.
+        $header = $this->make_header($body, $secret, time() * 1000);
+
+        self::assertSame('', webhook::verify_signature($body, $header, $secret));
+    }
+
     public function test_wrong_secret_is_rejected(): void {
         $body = '{"event_type":"enrollment.complete"}';
         $header = $this->make_header($body, 'the-real-secret', time());
@@ -83,6 +92,16 @@ class contentmarketplace_goone_webhook_test extends \core_phpunit\testcase {
         $secret = 'shhh-secret';
         // Correctly signed, but far outside the tolerance window (replay).
         $stale = time() - (webhook::WEBHOOK_TOLERANCE_SECONDS + 60);
+        $header = $this->make_header($body, $secret, $stale);
+
+        self::assertSame('Go1 signature timestamp outside the accepted tolerance.', webhook::verify_signature($body, $header, $secret));
+    }
+
+    public function test_stale_millisecond_timestamp_is_rejected(): void {
+        $body = '{"event_type":"enrollment.complete"}';
+        $secret = 'shhh-secret';
+        // Correctly signed, but far outside the tolerance window (replay), in milliseconds.
+        $stale = (time() - (webhook::WEBHOOK_TOLERANCE_SECONDS + 60)) * 1000;
         $header = $this->make_header($body, $secret, $stale);
 
         self::assertSame('Go1 signature timestamp outside the accepted tolerance.', webhook::verify_signature($body, $header, $secret));

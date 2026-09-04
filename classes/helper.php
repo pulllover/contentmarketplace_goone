@@ -92,6 +92,7 @@ class helper {
         global $CFG;
 
         require_once($CFG->dirroot.'/mod/scorm/lib.php');
+        require_once($CFG->dirroot.'/mod/scorm/locallib.php');
         require_once($CFG->dirroot.'/lib/completionlib.php');
 
         $db = builder::get_db();
@@ -112,7 +113,10 @@ class helper {
         $moduleinfo->popup = 1;
         $moduleinfo->width = 100;
         $moduleinfo->height = 100;
-        $moduleinfo->skipview = 2;
+        // Single activity courses have no course page to return to when the pop-up closes, so skipping
+        // the view page on every visit relaunches the pop-up; skip it on first access only there.
+        $format = $course->format ?? $db->get_field('course', 'format', ['id' => $course->id], MUST_EXIST);
+        $moduleinfo->skipview = $format === 'singleactivity' ? SCORM_SKIPVIEW_FIRST : SCORM_SKIPVIEW_ALWAYS;
         $moduleinfo->hidebrowse = 1;
         $moduleinfo->displaycoursestructure = 0;
         $moduleinfo->hidetoc = 3;
@@ -133,11 +137,12 @@ class helper {
         if ($assessable) {
             $moduleinfo->grademethod = GRADEHIGHEST;
             $moduleinfo->maxgrade = 100;
-            $moduleinfo->completionstatusrequired = self::get_completionstatusrequired('passed');
         } else {
             $moduleinfo->grademethod = GRADESCOES;
-            $moduleinfo->completionstatusrequired = self::get_completionstatusrequired('completed');
         }
+        // Accept either status Go1 may report, regardless of assessable/grademethod.
+        $moduleinfo->completionstatusrequired = self::get_completionstatusrequired('passed')
+            | self::get_completionstatusrequired('completed');
         $moduleinfo->completion = COMPLETION_TRACKING_AUTOMATIC;
         $moduleinfo->completionscoredisabled = 1;
 
@@ -238,6 +243,67 @@ class helper {
             // Deal with course creators - enrol them internally with default role.
             enrol_try_internal_enrol($course->id, $USER->id, $CFG->creatornewroleid);
         }
+    }
+
+    /**
+     * Set the course completion settings shared by every course this plugin creates:
+     * completion enabled, tracking starts on enrolment, and the course is marked
+     * In Progress when first viewed.
+     *
+     * @param \stdClass $coursedata course data about to be passed to course_helper::create_course()
+     */
+    public static function apply_course_completion_defaults(\stdClass $coursedata): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/completionlib.php');
+
+        $coursedata->enablecompletion = COMPLETION_ENABLED;
+        $coursedata->completionstartonenrol = 1;
+        $coursedata->completionprogressonview = 1;
+    }
+
+    /**
+     * Make the given course module the sole course completion criterion.
+     * Saves the activity criterion, the overall aggregation method and the
+     * activity aggregation method in one transaction.
+     *
+     * @param \stdClass $course course record
+     * @param int $cmid course_modules.id of the module in the course
+     */
+    public static function set_single_activity_completion(\stdClass $course, int $cmid): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/completionlib.php');
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria_activity.php');
+
+        $db = builder::get_db();
+
+        $data = new \stdClass();
+        $data->id = $course->id;
+        $data->overall_aggregation = COMPLETION_AGGREGATION_ALL;
+        $data->criteria_activity_value[$cmid] = 1;
+        $data->activity_aggregation = COMPLETION_AGGREGATION_ALL;
+
+        $transaction = $db->start_delegated_transaction();
+
+        // Set activity completion criterion.
+        $criterion = new \completion_criteria_activity();
+        $criterion->update_config($data);
+
+        // Set overall aggregation.
+        $aggdata = array(
+            'course'        => $course->id,
+            'criteriatype'  => null
+        );
+        $aggregation = new \completion_aggregation($aggdata);
+        $aggregation->setMethod($data->overall_aggregation);
+        $aggregation->save();
+
+        // Set activity aggregation.
+        $aggdata['criteriatype'] = COMPLETION_CRITERIA_TYPE_ACTIVITY;
+        $aggregation = new \completion_aggregation($aggdata);
+        $aggregation->setMethod($data->activity_aggregation);
+        $aggregation->save();
+
+        $transaction->allow_commit();
     }
 
 
@@ -856,10 +922,7 @@ class helper {
         $course_type = self::$config->get('course_type');
         $course_shortname = self::$config->get('course_shortname');
 
-        $db = builder::get_db();
-
         require_once($CFG->dirroot . '/mod/scorm/locallib.php');
-        require_once($CFG->dirroot.'/lib/completionlib.php');
 
         if ($course_shortname == 'withloid') {
             $shortname = 'goone_' . $hit->lo_id;
@@ -878,9 +941,7 @@ class helper {
         $coursedata->visible = true;
         $coursedata->summary = $descriptionhtml;
         $coursedata->summaryformat = 1;
-        $coursedata->enablecompletion = COMPLETION_ENABLED;
-        $coursedata->completionstartonenrol = 1;
-        $coursedata->completionprogressonview = 1;
+        self::apply_course_completion_defaults($coursedata);
         $coursedata->audiencevisible = (int) get_config('moodlecourse', 'visiblelearning');
 
         if ($course_type == self::CREATE_COURSE_SINGLE) {
@@ -905,38 +966,7 @@ class helper {
 
         // For single activity course, automatically set the added SCORM module as course completion criterion.
         if ($course_type == self::CREATE_COURSE_SINGLE) {
-            $cmid = $module->get_id();
-
-            require_once($CFG->dirroot.'/completion/criteria/completion_criteria_activity.php');
-
-            $data = new \stdClass();
-            $data->id = $course->id;
-            $data->overall_aggregation = 1;
-            $data->criteria_activity_value[$cmid] = 1;
-            $data->activity_aggregation = 1;
-
-            $transaction = $db->start_delegated_transaction();
-
-            // Set activity completion criterion.
-            $criterion = new \completion_criteria_activity();
-            $criterion->update_config($data);
-
-            // Set overall aggregation.
-            $aggdata = array(
-                'course'        => $course->id,
-                'criteriatype'  => null
-            );
-            $aggregation = new \completion_aggregation($aggdata);
-            $aggregation->setMethod($data->overall_aggregation);
-            $aggregation->save();
-
-            // Set activity aggregation.
-            $aggdata['criteriatype'] = COMPLETION_CRITERIA_TYPE_ACTIVITY;
-            $aggregation = new \completion_aggregation($aggdata);
-            $aggregation->setMethod($data->activity_aggregation);
-            $aggregation->save();
-
-            $transaction->allow_commit();
+            self::set_single_activity_completion($course, $module->get_id());
         }
 
         return true;

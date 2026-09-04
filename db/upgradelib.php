@@ -121,3 +121,29 @@ function contentmarketplace_goone_create_course_module_source_records(): void {
 
     $transaction->allow_commit();
 }
+
+/**
+ * Change Go1 SCORM activities in single activity courses from skipping the view page always to
+ * skipping it on first access only.
+ *
+ * Single activity courses have no course page to return to when the SCORM pop-up closes, so a
+ * SCORM that always skips its view page relaunches the pop-up as soon as it is closed.
+ */
+function contentmarketplace_goone_fix_single_activity_skipview(): void {
+    global $CFG, $DB;
+    require_once($CFG->dirroot . '/mod/scorm/locallib.php');
+
+    $DB->execute("
+        UPDATE {scorm}
+           SET skipview = :first
+         WHERE skipview = :always
+           AND id IN (
+               SELECT cm.instance
+                 FROM {course_modules} cm
+                 JOIN {modules} m ON m.id = cm.module AND m.name = 'scorm'
+                 JOIN {course} c ON c.id = cm.course AND c.format = 'singleactivity'
+                 JOIN {totara_contentmarketplace_course_module_source} src
+                   ON src.cm_id = cm.id AND src.marketplace_component = 'contentmarketplace_goone'
+           )
+    ", ['first' => SCORM_SKIPVIEW_FIRST, 'always' => SCORM_SKIPVIEW_ALWAYS]);
+}

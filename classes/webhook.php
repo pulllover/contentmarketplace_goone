@@ -186,7 +186,7 @@ class webhook {
 
         $error = self::verify_signature($request, $header, self::get_webhook_secret_key());
         if ($error !== '') {
-            self::log_error($error, $request);
+            self::log_error($error, $header . "\n" . $request);
             return;
         }
 
@@ -222,8 +222,11 @@ class webhook {
 
         $timestamp = $signature[0];
 
+        // Support both seconds (10 digits) and milliseconds (13 digits)
+        $timestamp_seconds = (int) substr($timestamp, 0, 10);
+
         // Only a timestamp within the tolerance window is accepted.
-        if (!is_numeric($timestamp) || abs(time() - (int) $timestamp) > self::WEBHOOK_TOLERANCE_SECONDS) {
+        if (!is_numeric($timestamp) || abs(time() - $timestamp_seconds) > self::WEBHOOK_TOLERANCE_SECONDS) {
             return 'Go1 signature timestamp outside the accepted tolerance.';
         }
 
