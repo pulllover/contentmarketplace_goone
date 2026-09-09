@@ -70,7 +70,7 @@ See [CHANGELOG.md](CHANGELOG.md) for the full list of changes against the core p
 
 4. Purge caches.
 
-Upgrading from the core plugin is supported. The upgrade step migrates the stored content access setting to the new collection names and enables the add activity workflow.
+Upgrading from the core plugin is supported. The upgrade step migrates the stored content access setting to the new collection names and enables the add activity workflow. After the plugin has been upgraded, click the "Set up" to authorise the integration with additional scopes.
 
 ## Configuration
 
