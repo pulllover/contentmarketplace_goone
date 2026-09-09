@@ -1,0 +1,70 @@
+{
+    "name": "go1/contentmarketplace-goone",
+    "description": "Go1 Content Marketplace integration. Create Totara courses and activities from Go1 learning objects.",
+    "type": "totara-contentmarketplace",
+    "keywords": [
+        "go1",
+        "integration",
+        "contentmarketplace"
+    ],
+    "homepage": "https://help.go1.com/en/articles/15700339-integrating-go1-portals-with-totara",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Kirill Astashov",
+            "email": "kirill.astashov@androgogic.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "support@go1.com",
+        "docs": "https://help.go1.com/en/articles/15700339-integrating-go1-portals-with-totara"
+    },
+    "require": {
+        "totara/core": "^20.0"
+    },
+    "extra": {
+        "installer-name": "goone",
+        "totara-marketplace": {
+            "icon": {
+                "url": "https://media.go1static.com/image/upload/v1788150942/u1tkpctryzb8rdmzgkqu.png",
+                "alt": "Go1 logo"
+            },
+            "feature-image": {
+                "url": "https://downloads.intercomcdn.com/i/o/aa7s04yh/699419/1eeb4db20d871cc9d5e2a5a41fa1/583e2fc5a9310a0c6868095a8c50894b.png",
+                "alt": "Go1 Content Marketplace integration"
+            },
+            "video": {
+                "url": "https://www.youtube.com/watch?v=_LmRoVlElt8",
+                "type": "youtube"
+            },
+            "privacy-security": "The Go1 Trust centre can be found here: https://trust.go1.com. This page reflects Go1's commitment to our customers in how we store, process, and transmit data securely, and outlines the safeguards we put in place across the Go1 platform and organization to uphold that trust.\n\nWebhook feature requires the following IP addresses to be whitelisted if implementing Firewalls/IP restrictions:\n54.66.63.79\n13.237.185.31\n54.79.82.99\n54.73.246.253\n18.202.187.18\n63.34.252.228\n3.12.138.156\n18.220.157.74\n3.17.171.135\n13.210.186.184\n3.104.45.181\n13.237.196.62\n34.251.104.234\n3.255.10.106\n34.254.3.234\n3.147.19.120\n3.23.32.97\n3.150.139.140",
+            "localization": {
+                "default-language": "en"
+            },
+            "screenshots": [
+                {
+                    "url": "https://downloads.intercomcdn.com/i/o/aa7s04yh/2510809249/54571cc27f714ccb45f74c8d47cb/image.png",
+                    "alt": "The Go1 integration is configured from the Content marketplace dashboard in the settings menu from the Totara homescreen."
+                },
+                {
+                    "url": "https://downloads.intercomcdn.com/i/o/aa7s04yh/2510810662/100f3a9d74cd3fd325903e91b22c/image.png",
+                    "alt": "Go1 content can be synced from the Manage Go1 Content Library screen within the Content Marketplace in Totara. In this screen, Admins can search, preview and curate the content they want to sync over to their Totara LMS platform."
+                },
+                {
+                    "url": "https://downloads.intercomcdn.com/i/o/aa7s04yh/2510810943/2fb842e79483ad2d0e18698cc419/image.png",
+                    "alt": "Learners can find the synced Go1 content in the Totara LMS by using the Find Learning dashboard. In this screen, users can search and filter for Go1 content that has been synced to begin their learning journey."
+                }
+            ],
+            "abstract": "Go1 Content Marketplace integration. Create Totara courses and activities from Go1 learning objects.",
+            "changelog": "https://assets.androgogic.com.au/go1/totara/go1-plugin-changelog.html",
+            "databases": [
+                "MYSQL",
+                "MARIADB",
+                "PGSQL"
+            ],
+            "review-email": "kirill.astashov@androgogic.com",
+            "partner-sales-email": "luke@go1.com"
+        }
+    }
+}
