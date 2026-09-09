@@ -6,13 +6,7 @@ This repository holds the uplifted version of the plugin, rebuilt against the Go
 
 ## Compatibility
 
-| Branch              | Totara version | Plugin version | Release      |
-|---------------------|----------------|----------------|--------------|
-| `TOTARA_20_STABLE`  | Totara 20.0+   | `2026090400`   | 2.0.0-rc.2   |
-
-The plugin requires Totara 20 (`$plugin->requires = 2026011500`). It is not compatible with earlier Totara versions.
-
-Each supported Totara major version has its own `TOTARA_XX_STABLE` branch. Check out the branch matching your site.
+The plugin requires Totara 20. It is not compatible with earlier Totara versions.
 
 ## What the repository contains
 
@@ -43,12 +37,12 @@ Main parts:
 
 ## Features
 
-- **Go1 API v3.** All calls go to `gateway.go1.com` with the `Api-Version: 2025-01-01` header.
+- **Go1 API v3.** Supported API version `2025-01-01`.
 - **Content curation.** The Go1 Content Hub is embedded in Totara. The Totara user is matched to or created as a Go1 account and given the Content administrator role.
-- **Content sync.** Published learning objects from the chosen collections (free, subscribed, custom) are created as courses with image, generated description, SCORM module and completion criteria. Runs from the core marketplace scheduled task or from the Sync content button.
+- **Content sync.** Published learning objects from the chosen collections (free, subscribed, custom) are created as courses with image, generated description, SCORM module and completion criteria. Runs from the core marketplace scheduled task; custom library can also be synced manually using the Sync content button.
 - **Retired content processing.** Courses built on retired or removed learning objects can be banner marked, annotated, moved to a category or hidden.
-- **Completion webhook.** Go1 `enrollment.complete` events are verified and mapped to SCORM activity completions in Totara. Failures are logged in the admin UI.
-- **Add course and add activity workflows.** Create a new course from a Go1 learning object, or add one as an activity to an existing course.
+- **Completion webhook.** The plugin receives `enrollment.complete` notifications from Go1, these events are verified and mapped to SCORM activity completions in Totara.
+- **Add course and add activity workflows.** Create a new course from a Go1 learning object manually, or add one as an activity to an existing course.
 - **Tabbed settings.** General, Content sync, Retired content, Content access and Webhook tabs.
 
 See [CHANGELOG.md](CHANGELOG.md) for the full list of changes against the core plugin.
@@ -89,21 +83,13 @@ Content curation requires the `contentmarketplace/goone:curatecontent` capabilit
 
 ## Requirements on the Go1 side
 
-The OAuth client must be granted these scopes:
+The OAuth client requests the following scopes in GO1:
 
 ```
 lo.read lo.write enrollment.read portal.read portal.write user.read user.write user.login webhook.read webhook.write
 ```
 
-If a scope is missing the plugin raises an error asking you to contact Go1 support.
-
-## Running the tests
-
-From the Totara root, after initialising the PHPUnit environment:
-
-```bash
-php test/phpunit/phpunit.php --testsuite contentmarketplace_goone_testsuite
-```
+If a scope is missing or not granted automatically, the plugin raises an error asking you to contact Go1 support. Once the support help to add the missing scope, click the Set up link again to authorise the integration with the full set of scopes.
 
 ## Licence
 
