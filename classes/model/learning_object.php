@@ -49,7 +49,7 @@ use totara_contentmarketplace\learning_object\text;
  *
  * @package contentmarketplace_goone\model
  */
-class learning_object extends model implements detailed_model {
+final class learning_object extends model implements detailed_model {
 
     /**
      * @var api|null Don't access this directly, use {@see get_api()}
