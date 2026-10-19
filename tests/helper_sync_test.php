@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use contentmarketplace_goone\helper;
@@ -193,5 +194,90 @@ class contentmarketplace_goone_helper_sync_test extends testcase {
         $course = builder::table('course')->where('fullname', 'Responding to Seizures')->one();
         $scorm = builder::table('scorm')->where('course', $course->id)->one();
         self::assertEquals(SCORM_SKIPVIEW_ALWAYS, $scorm->skipview);
+    }
+
+    /**
+     * Event observer that stops the course creation with a PHP error.
+     * The event manager catches \Exception from observers, but not \Error.
+     *
+     * @return void
+     */
+    public static function fail_observer(): void {
+        throw new \Error('Simulated failure');
+    }
+
+    /**
+     * Make the course creation fail when the course module source record is created.
+     * This is the last database write in add_scorm_module().
+     *
+     * @return void
+     */
+    private function fail_on_course_module_source_created(): void {
+        \core\event\manager::phpunit_replace_observers([
+            [
+                'eventname' => '\totara_contentmarketplace\event\course_module_source_created',
+                'callback' => [self::class, 'fail_observer'],
+            ],
+        ]);
+    }
+
+    public function test_create_course_from_learning_object_no_course_when_download_fails(): void {
+        $category = self::getDataGenerator()->create_category();
+        $this->configure_sync($category->id, helper::CREATE_COURSE_SINGLE);
+        $hit = $this->make_hit();
+        // The mock API has no SCORM package for this learning object, thus the download fails.
+        $hit->lo_id = 999999;
+
+        try {
+            helper::create_course_from_learning_object($hit, generator::instance()->get_mock_api());
+            self::fail('The SCORM download did not fail');
+        } catch (\Exception $e) {
+            self::assertStringContainsString('999999', $e->getMessage());
+        }
+
+        self::assertSame(0, builder::table('course')->where('category', $category->id)->count());
+    }
+
+    public function test_create_course_from_learning_object_rolls_back_on_failure(): void {
+        global $DB;
+        $category = self::getDataGenerator()->create_category();
+        $this->configure_sync($category->id, helper::CREATE_COURSE_SINGLE);
+        $api = generator::instance()->get_mock_api();
+        $this->fail_on_course_module_source_created();
+
+        try {
+            helper::create_course_from_learning_object($this->make_hit(), $api);
+            self::fail('The course creation did not fail');
+        } catch (\Error $e) {
+            self::assertSame('Simulated failure', $e->getMessage());
+        }
+
+        self::assertFalse($DB->is_transaction_started());
+        self::assertSame(0, builder::table('course')->where('category', $category->id)->count());
+        self::assertSame(0, builder::table('scorm')->count());
+        self::assertSame(0, builder::table('totara_contentmarketplace_course_module_source')->count());
+        self::assertSame(0, builder::table('marketplace_goone_learning_object')->where('external_id', 29271)->count());
+    }
+
+    public function test_add_scorm_module_rolls_back_on_failure(): void {
+        global $DB;
+        $course = self::getDataGenerator()->create_course();
+        $api = generator::instance()->get_mock_api();
+        $packagefile = helper::fetch_scorm_package('Responding to Seizures', 29271, $api);
+        $learning_object_model = learning_object::load_by_external_id(29271, $api);
+        $this->fail_on_course_module_source_created();
+
+        try {
+            helper::add_scorm_module($course, 'Responding to Seizures', $packagefile, '', true, 0, $learning_object_model);
+            self::fail('The module creation did not fail');
+        } catch (\Error $e) {
+            self::assertSame('Simulated failure', $e->getMessage());
+        }
+
+        // The course stays, but it has no SCORM module and no course module source record.
+        self::assertFalse($DB->is_transaction_started());
+        self::assertTrue($DB->record_exists('course', ['id' => $course->id]));
+        self::assertSame(0, builder::table('scorm')->where('course', $course->id)->count());
+        self::assertSame(0, builder::table('totara_contentmarketplace_course_module_source')->count());
     }
 }

@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace contentmarketplace_goone\form;
@@ -115,6 +115,10 @@ class content_sync_settings_form extends \totara_form\form {
 
         if (!empty($data['create_courses']) && empty($data['course_shortname'])) {
             $errors['course_shortname'] = get_string('required');
+        }
+
+        if (!empty($data['create_courses']) && empty($data['sync_collections'])) {
+            $errors['sync_collections'] = get_string('collections_sync_notselected', 'contentmarketplace_goone');
         }
 
         return $errors;

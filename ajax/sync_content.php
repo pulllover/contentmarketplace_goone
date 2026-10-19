@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 define('AJAX_SCRIPT', true);
@@ -38,6 +39,23 @@ if (!confirm_sesskey()) {
     exit;
 }
 
+// The button syncs new content, so course creation must be on and configured.
+if (!\contentmarketplace_goone\helper::is_create_courses_on_and_configured()) {
+    $data->result = false;
+    $data->message = get_string('error:sync_not_configured', 'contentmarketplace_goone');
+    echo json_encode($data);
+    exit;
+}
+
+// The button syncs only the custom collection, so it must be selected for sync.
+$sync_collections = explode(',', (string) get_config('contentmarketplace_goone', 'sync_collections'));
+if (!in_array('custom', $sync_collections, true)) {
+    $data->result = false;
+    $data->message = get_string('error:sync_custom_not_selected', 'contentmarketplace_goone');
+    echo json_encode($data);
+    exit;
+}
+
 $sync = new \contentmarketplace_goone\sync_action\sync_learning_objects();
 
 // On AJAX call, sync only changes in custom collection (library).
@@ -47,10 +65,20 @@ $sync->set_sync_collections(['custom']);
 try {
     $sync->invoke();
     $data->result = true;
-    $data->message = get_string('content_synced_success', 'contentmarketplace_goone');
+    $created = $sync->get_created_courses_total();
+    if ($created > 0) {
+        $data->message = get_string('content_synced_success_courses', 'contentmarketplace_goone', $created);
+    } else {
+        $data->message = get_string('content_synced_success_nocourses', 'contentmarketplace_goone');
+    }
 } catch (Throwable $e) {
     $data->result = false;
-    $data->message = $e->getMessage();
+    $is_sync_in_progress = $e instanceof moodle_exception && $e->errorcode === 'error:sync_in_progress';
+    if ($is_sync_in_progress || get_config('contentmarketplace_goone', 'debug_requests')) {
+        $data->message = $e->getMessage();
+    } else {
+        $data->message = get_string('error:sync_failed_general', 'contentmarketplace_goone');
+    }
 }
 
 echo json_encode($data);

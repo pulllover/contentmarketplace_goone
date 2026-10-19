@@ -49,11 +49,12 @@ $string['collectionwithtotal:subscribe'] = 'Included in subscription ({$a})';
 $string['collectionwithtotal:custom'] = 'Custom library ({$a})';
 $string['collections'] = 'Collections';
 $string['collections_help'] = 'Recommended setting: "Custom library".
-        Selecting large collections is not advised, as it may result in tens of thousand of courses created
+        Selecting large collections may result in tens of thousand of courses created
         in the LMS automatically, which may prove tricky to manage and, depending on the system specifications,
         may adversely impact the performance of the LMS. If no collections are selected,
         content sync will not happen.';
 $string['collections_sync'] = 'Sync collections';
+$string['collections_sync_notselected'] = 'Select one or more collections to sync';
 $string['complete_connection'] = 'Scope confirmed, proceed to complete connection >>';
 $string['content_access'] = 'Content access';
 $string['content_access_settings'] = 'Content access settings';
@@ -62,6 +63,7 @@ $string['content_access_settings_description'] = 'When manually adding activitie
     <strong>Note: </strong> site admins have access to all synced content regardless of these settings.';
 $string['content_creators'] = 'Content creators';
 $string['content_creators_help'] = 'Anyone with capability "totara/contentmarketplace:add"';
+$string['content_hub'] = 'Go1 Content Hub';
 $string['content_regions'] = 'Content relevance regions';
 $string['content_regions_help'] = 'If selected, only content relevant to specified regions will be synced.
     If nothing is selected, content relevant to any region will be synced.';
@@ -69,7 +71,8 @@ $string['content_sync'] = 'Content sync';
 $string['content_sync_settings'] = 'Content sync settings';
 $string['content_sync_settings_description'] = 'Content from Go1 can be synced to create courses in Totara automatically.
     Syncing is performed by pressing the Sync button in the content curation screen, or by the scheduled task <code>\totara_contentmarketplace\task\sync_task</code>';
-$string['content_synced_success'] = 'Content synced successfully.';
+$string['content_synced_success_courses'] = 'Custom library synced successfully. Courses created: {$a}.';
+$string['content_synced_success_nocourses'] = 'Custom library synced successfully. No courses created.';
 $string['continue'] = 'Continue';
 $string['course_category'] = 'Course category';
 $string['course_category_help'] = 'New courses will be created in the selected course category.';
@@ -94,23 +97,30 @@ $string['create_courses'] = 'Create courses';
 $string['create_courses_help'] = 'Sync learning content from Go1 and create courses in the LMS from it.';
 $string['currentplan'] = 'Current Plan';
 $string['curate_content'] = 'Manage Go1 content library';
+$string['debug_requests'] = 'Debug requests';
+$string['debug_requests_help'] = 'Show technical details when the content sync fails.';
 $string['duration'] = '{$a} minutes';
 $string['error:invalid_token'] = 'There is an authentication problem when connecting to the Go1 servers. The Go1 content marketplace will need to be set up again.';
 $string['error:invalidoauthstate'] = 'The response from the Go1 authorisation service could not be verified. Please restart the Go1 setup from the content marketplace setup page.';
 $string['error:cannotobtainott'] = 'Failed to obtain user authentication token';
 $string['error:pluginnotconfigured'] = 'Go1 content marketplace integration is not configured.';
 $string['error:rest_client_timeout'] = 'Communication with Go1 server timed out. Please try again in a moment.';
+$string['error:sync_custom_not_selected'] = 'The custom library is not selected for sync. On the Content sync tab, select "Custom library" in "Sync collections".';
 $string['error:sync_failed'] = 'Go1 content sync failed: {$a}';
+$string['error:sync_failed_general'] = 'Content sync failed. Please try again or reach technical support.';
+$string['error:sync_in_progress'] = 'A Go1 content sync is already in progress. Try again later.';
+$string['error:sync_not_configured'] = 'Go1 content sync is not configured. On the Content sync tab, set "Create courses" to Yes.
+    "Custom library" sync must also be enabled.';
 $string['error:unavailable_learning_object'] = 'Attempted to use unavailable learning object. Please return to the Go1 content marketplace.';
 $string['error:missing_scope_header'] = 'Almost there — one step needed before we can connect';
-$string['error:missing_scope'] = 'Your Go1 account was verified successfully, but the integration requires an additional
-    permission (user.login scope) that hasn\'t been enabled on your Go1 client application yet.
-    <p><br />To complete the setup:
+$string['error:missing_scope'] = '<p>Your Go1 account was verified successfully, but the integration requires an additional
+    permission (user.login scope) that hasn\'t been enabled on your Go1 client application yet.</p>
+    <p>To complete the setup:</p>
     <ul>
-    <li>Email <a href="mailto:support@go1.com">support@go1.com</a> with the subject line: "Enable user.login scope for Totara integration"
-    <li>Include your Go1 Client_ID in the email: <code>{$a}</code>
-    <li>The Go1 support team will enable the required scope on your account.
-    <li>Once confirmed, return to this page and complete the connection.
+    <li>Email <a href="mailto:support@go1.com">support@go1.com</a> with the subject line: "Enable user.login scope for Totara integration"</li>
+    <li>Include your Go1 Client_ID in the email: <code>{$a}</code></li>
+    <li>The Go1 support team will enable the required scope on your account.</li>
+    <li>Once confirmed, return to this page and complete the connection.</li>
     </ul>';
 $string['error_adding_activity_invalid_mode'] = 'Error adding activity: invalid mode';
 $string['explorego1marketplace'] = 'Go1 content marketplace';
@@ -213,9 +223,10 @@ $string['sort:title'] = 'Alphabetical (A to Z)';
 $string['specific_collection'] = 'Specific collection';
 $string['subscribed_content'] = 'Subscribed content ({$a})';
 $string['subscription_details'] = 'Subscription details';
-$string['synccontent'] = 'Sync content';
+$string['synccontent'] = 'Sync custom library';
 $string['syncing'] = 'Syncing...';
 $string['unknownlanguage'] = 'Unknown';
+$string['userdataitemuser_map'] = 'Go1 user account mapping';
 $string['warningdisablemarketplace:body:html'] = '<p>You are about to disable the Go1 content marketplace. If you proceed, items from the marketplace will no longer be available to course creators for inclusion in newly created courses.</p>
 <p>Users who have previously already started Go1 activities will continue to have access to that content, but they will not be able to start new Go1 activities.</p>
 <p>Are you sure you wish to proceed?</p>';

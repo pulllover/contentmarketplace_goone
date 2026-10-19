@@ -30,6 +30,9 @@ require_once($CFG->libdir . '/filelib.php');
 
 class rest_client {
 
+    /** Maximum number of response body characters in an error message */
+    private const MAX_ERROR_BODY_LENGTH = 10000;
+
     /** @var string */
     private $endpoint = null;
 
@@ -227,20 +230,39 @@ class rest_client {
             if (json_last_error() == 0 && isset($data->message) && $data->message == 'Missing scopes') {
                 throw new missing_scope_exception($url, $response);
             }
-            throw new invalid_token_exception($url, $response);
+            throw new invalid_token_exception($url, self::shorten_error_body((string) $response));
         } else {
             $message = "Unexpected response from GO1 API. Received " . $info['http_code'];
-            if ($info['content_type'] === 'application/json') {
-                $data = json_decode($response);
-                if (json_last_error() == 0 and isset($data->message)) {
-                    $message .= " $data->message";
-                } else {
-                    $message .= " $response";
+            $body = (string) $response;
+            if (self::is_content_type_json((string) $info['content_type'])) {
+                $data = json_decode($body);
+                if (json_last_error() == 0 && isset($data->message) && is_string($data->message)) {
+                    if (isset($data->error_code) && is_scalar($data->error_code)) {
+                        $body = $data->message . " ({$data->error_code})";
+                    } else {
+                        $body = $data->message;
+                    }
                 }
+            }
+            if ($body !== '') {
+                $message .= ' ' . self::shorten_error_body($body);
             }
             $message .= " (Called URL $url)";
             throw new \Exception($message);
         }
+    }
+
+    /**
+     * Shorten a response body for use in an error message.
+     *
+     * @param string $body
+     * @return string
+     */
+    private static function shorten_error_body(string $body): string {
+        if (\core_text::strlen($body) <= self::MAX_ERROR_BODY_LENGTH) {
+            return $body;
+        }
+        return \core_text::substr($body, 0, self::MAX_ERROR_BODY_LENGTH) . '...';
     }
 
     /**

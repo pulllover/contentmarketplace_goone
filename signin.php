@@ -47,6 +47,7 @@ if (!oauth::verify_authorize_state($state)) {
 }
 
 $PAGE->set_pagelayout('popup');
+$PAGE->set_title(get_string('setup_page_header', 'contentmarketplace_goone'));
 
 $oauth_client = new oauth(new config_session_storage());
 $oauth_client->token_setup($client_id, $client_secret, $code, contentmarketplace::oauth_redirect_uri());

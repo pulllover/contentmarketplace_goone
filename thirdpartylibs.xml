@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>lib/fonts/OpenSans.ttf</location>
+        <name>Open Sans</name>
+        <version>3.003</version>
+        <license>OFL</license>
+        <licenseversion>1.1</licenseversion>
+    </library>
+</libraries>

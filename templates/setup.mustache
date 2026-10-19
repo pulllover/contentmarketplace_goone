@@ -19,7 +19,7 @@
    @author Sergey Vidusov <sergey.vidusov@androgogic.com>
    @package contentmarketplace_goone
 }}
-<a href="" id="{{ uniqid }}-goone-setup" data-oauthauthorizeurl="{{oauth_authorize_url}}">{{ label }}</a>
+<a href="" role="button" id="{{ uniqid }}-goone-setup" data-oauthauthorizeurl="{{oauth_authorize_url}}">{{ label }}</a>
 {{#js}}
     require(['contentmarketplace_goone/oauth'], function(oauth) {
         oauth.init("#{{ uniqid }}-goone-setup");

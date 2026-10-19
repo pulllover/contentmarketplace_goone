@@ -25,6 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'contentmarketplace_goone';
-$plugin->version   = 2026090400;
+$plugin->version   = 2026100600;
 $plugin->requires  = 2026011500;                    // Requires Totara 20
 $plugin->release = '2.0.0-rc.2';

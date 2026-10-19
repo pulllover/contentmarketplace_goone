@@ -2,8 +2,6 @@
 /**
  * This file is part of Totara Learn
  *
- * Copyright (C) 2021 onwards Totara Learning Solutions LTD
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -17,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author  Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace contentmarketplace_goone\sync_action;
 
@@ -46,6 +46,9 @@ class sync_learning_objects extends sync_action {
     private $api;
 
     private $sync_collections = [];
+
+    /** @var int Number of courses created in the last run */
+    private int $created_courses_total = 0;
 
     /**
      * sync_learning_asset constructor.
@@ -106,6 +109,16 @@ class sync_learning_objects extends sync_action {
 
 
     /**
+     * Get the number of courses that the last run created.
+     *
+     * @return int
+     */
+    public function get_created_courses_total(): int {
+        return $this->created_courses_total;
+    }
+
+
+    /**
      * @inheritDoc
      */
     public function invoke(): void {
@@ -115,12 +128,34 @@ class sync_learning_objects extends sync_action {
             return;
         }
 
+        // Only one sync can run at a time.
+        $lockfactory = \core\lock\lock_config::get_lock_factory('contentmarketplace_goone');
+        $lock = $lockfactory->get_lock('sync_learning_objects', 0);
+        if (!$lock) {
+            throw new \moodle_exception('error:sync_in_progress', 'contentmarketplace_goone');
+        }
+
+        try {
+            $this->sync_all_collections();
+        } finally {
+            $lock->release();
+        }
+    }
+
+
+    /**
+     * Sync new and retired content in all configured collections.
+     *
+     * @return void
+     */
+    private function sync_all_collections(): void {
         $db = builder::get_db();
 
         $sync_collections = $this->get_sync_collections();
 
         $los_published_total = 0;
         $los_retired_total = 0;
+        $this->created_courses_total = 0;
         $failures = [];
         $mode = contentmarketplace::CONTENT_AVAILABILITY_SYNC;
 
@@ -137,7 +172,7 @@ class sync_learning_objects extends sync_action {
                 try {
                     $result = $this->sync_collection_new_content($collection);
                 } catch (\Throwable $e) {
-                    $result = ['total' => 0, 'success' => false, 'message' => $e->getMessage()];
+                    $result = ['total' => 0, 'created' => 0, 'success' => false, 'message' => $e->getMessage()];
                 }
                 if (!empty($result['message'])) {
                     $this->trace->output($result['message'], 2);
@@ -146,6 +181,7 @@ class sync_learning_objects extends sync_action {
                     $failures[] = "new content in collection {$collection}: {$result['message']}";
                 }
                 $los_published_total += $result['total'];
+                $this->created_courses_total += $result['created'];
             }
         }
 
@@ -192,6 +228,7 @@ class sync_learning_objects extends sync_action {
      * @param string $collection - any of contentmarketplace_goone\contentmarketplace::$available_collections
      *
      * @return array [(int) 'total'      - number of processed learning objects,
+     *                (int) 'created'    - number of created courses,
      *                (string) 'message' - diagnostic message,
      *                (bool) 'success'   - success or abnormal termination
      *                ]
@@ -236,13 +273,14 @@ class sync_learning_objects extends sync_action {
                         $params['scroll_id'] = $next_scroll_id;
                     }
                     $response = $api->get_learning_objects($params);
+                    // $this->trace->output("Got " . sizeof($response->hits) . " LOs");
                     if (!sizeof ($response->hits)) {
                         break;
                     }
                     foreach ($response->hits as $hit) {
                         $result = helper::process_sync_learning_object($hit, $api);
                         if ($result['success'] !== true) {
-                            return ['total' => $synced_los, 'message' => $result['message'], 'success' => false];
+                            return ['total' => $synced_los, 'created' => $created_courses, 'message' => $result['message'], 'success' => false];
                         }
                         if ($result['created']) {
                             $created_courses++;
@@ -259,12 +297,16 @@ class sync_learning_objects extends sync_action {
                 } while ($synced_los < $response->total);
             } catch (\Exception $e) {
                 $message = $e->getMessage();
+                // Moodle exceptions keep the server response in the debug information.
+                if ($e instanceof \moodle_exception && !empty($e->debuginfo)) {
+                    $message .= ' ' . $e->debuginfo;
+                }
                 $this->trace->output("Processed: {$synced_los}, courses created: {$created_courses}", 4);
-                return ['total' => $synced_los, 'message' => "Abnormal termination: " . $message, 'success' => false];
+                return ['total' => $synced_los, 'created' => $created_courses, 'message' => "Abnormal termination: " . $message . "\n Total synced: " . $synced_los, 'success' => false];
             }
         }
         $this->trace->output("Processed: {$synced_los}, courses created: {$created_courses}", 2);
-        return ['total' => $synced_los, 'success' => true, 'message' => ''];
+        return ['total' => $synced_los, 'created' => $created_courses, 'success' => true, 'message' => ''];
     }
 
 

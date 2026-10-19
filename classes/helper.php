@@ -1,9 +1,7 @@
 <?php
 
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace contentmarketplace_goone;
@@ -78,17 +78,38 @@ class helper {
 
 
     /**
+     * Download the SCORM package of a learning object from Go1 into a draft file.
+     * Call this before a database transaction starts, so that the transaction does not stay open during the download.
+     *
+     * @param string $name activity name, used for the file name
+     * @param int $itemid Go1 learning object id
+     * @param api $api
+     * @return \stored_file draft file that contains the SCORM package
+     */
+    public static function fetch_scorm_package(string $name, int $itemid, api $api): \stored_file {
+        global $CFG;
+        require_once($CFG->dirroot . '/mod/scorm/locallib.php');
+
+        $scormzip = $api->get_scorm($itemid);
+        $packagefile = self::storedfile($name, $itemid, $scormzip);
+        scorm_add_trusted_package_contenthash($packagefile->get_contenthash());
+
+        return $packagefile;
+    }
+
+    /**
+     * Add a SCORM module and its course module source record.
+     *
      * @param object $course
      * @param string $name
-     * @param int $itemid
+     * @param \stored_file $packagefile draft file from fetch_scorm_package()
      * @param string $descriptionhtml
      * @param int $assessable
      * @param int $section
      * @param learning_object|null $learning_object_model
-     * @param api|null $api API instance, created internally when not supplied
      * @return module
      */
-    static function add_scorm_module($course, $name, $itemid, $descriptionhtml, $assessable, $section = 0, $learning_object_model = null, ?api $api = null) {
+    static function add_scorm_module($course, $name, \stored_file $packagefile, $descriptionhtml, $assessable, $section = 0, $learning_object_model = null) {
         global $CFG;
 
         require_once($CFG->dirroot.'/mod/scorm/lib.php');
@@ -128,11 +149,7 @@ class helper {
 
         $moduleinfo->scormtype = SCORM_TYPE_LOCAL;
 
-        $api = $api ?? new \contentmarketplace_goone\api();
-        $scormzip = $api->get_scorm($itemid);
-        $packagefile = self::storedfile($name, $itemid, $scormzip);
         $moduleinfo->packagefile = $packagefile->get_itemid();
-        scorm_add_trusted_package_contenthash($packagefile->get_contenthash());
 
         if ($assessable) {
             $moduleinfo->grademethod = GRADEHIGHEST;
@@ -147,11 +164,19 @@ class helper {
         $moduleinfo->completionscoredisabled = 1;
 
         $container = factory::from_record($course);
-        /** @var course_module $module */
-        $module = $container->add_module($moduleinfo);
 
-        if ($learning_object_model) {
-            course_module_source::create($module, $learning_object_model);
+        $transaction = $db->start_delegated_transaction();
+        try {
+            /** @var course_module $module */
+            $module = $container->add_module($moduleinfo);
+
+            if ($learning_object_model) {
+                course_module_source::create($module, $learning_object_model);
+            }
+
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            $transaction->rollback($e);
         }
 
         return $module;
@@ -669,7 +694,7 @@ class helper {
 
         // Definitions
         $fontsize_ratio = 0.06; // Relative to image width
-        $font = dirname(dirname(__file__)) . '/lib/fonts/Verdana.ttf';
+        $font = dirname(dirname(__file__)) . '/lib/fonts/OpenSans.ttf';
         $fontSize = $width * $fontsize_ratio;
         $padding = $fontSize / 3;
 
@@ -700,7 +725,7 @@ class helper {
         $styleContent = "
             text.go1notice {
                 font-size: {$fontSize}px;
-                font-family: Verdana;
+                font-family: 'Open Sans', sans-serif;
                 fill: red;
                 text-anchor: middle;
             }
@@ -951,22 +976,30 @@ class helper {
         } else {
             $section = 1;
         }
-        $container = \container_course\course_helper::create_course($coursedata);
+        $packagefile = self::fetch_scorm_package($title, $loid, $api);
 
-        $course = course_get_format($container->id)->get_course();
+        // Create the course, the SCORM module and the completion settings, or nothing.
+        $transaction = builder::get_db()->start_delegated_transaction();
+        try {
+            $container = \container_course\course_helper::create_course($coursedata);
+            $course = course_get_format($container->id)->get_course();
 
-        // Add course image.
-        if (!empty($hit->core->image->value)) {
-            self::add_course_image_from_url($course->id, $hit->core->image->value);
+            $learning_object_model = learning_object::load_by_external_id($loid, $api);
+            $module = self::add_scorm_module($course, $title, $packagefile, $descriptionhtml, $hit->playback_behavior->assessable, $section, $learning_object_model);
+
+            // For single activity course, automatically set the added SCORM module as course completion criterion.
+            if ($course_type == self::CREATE_COURSE_SINGLE) {
+                self::set_single_activity_completion($course, $module->get_id());
+            }
+
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            $transaction->rollback($e);
         }
 
-        // Add SCORM module.
-        $learning_object_model = learning_object::load_by_external_id($loid, $api);
-        $module = self::add_scorm_module($course, $title, $loid, $descriptionhtml, $hit->playback_behavior->assessable, $section, $learning_object_model, $api);
-
-        // For single activity course, automatically set the added SCORM module as course completion criterion.
-        if ($course_type == self::CREATE_COURSE_SINGLE) {
-            self::set_single_activity_completion($course, $module->get_id());
+        // The course image is optional, thus it is added after the course is complete.
+        if (!empty($hit->core->image->value)) {
+            self::add_course_image_from_url($course->id, $hit->core->image->value);
         }
 
         return true;
@@ -985,14 +1018,17 @@ class helper {
         if (($content_type = self::validate_image_url($url)) === false) {
             return;
         }
+        $str = download_file_content($url);
+        if (empty($str)) {
+            return;
+        }
         $fs = get_file_storage();
         $context = \context_course::instance($courseid);
 
         if ($content_type == 'image/svg+xml' || $content_type == 'image/svg') {
-            $image_str = download_file_content($url);
+            $image_str = $str;
             $filename = basename(parse_url($url, PHP_URL_PATH));
         } else {
-            $str = download_file_content($url);
             $image = imagecreatefromstring($str);
             if (empty($image)) {
                 return;

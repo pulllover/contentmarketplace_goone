@@ -457,14 +457,14 @@ class contentmarketplace_goone_search_test extends \core_phpunit\testcase {
         self::assertSame([], $language['options']);
     }
 
-    public function test_select_all_returns_ids(): void {
+    public function test_select_all_returns_ids_from_all_pages(): void {
         self::setAdminUser();
         $search = $this->make_mock_search();
 
         $ids = $search->select_all('', [],
             \totara_contentmarketplace\explorer::MODE_EXPLORE, context_system::instance());
 
-        self::assertSame([111, 222], $ids);
+        self::assertSame([111, 222, 333], $ids);
     }
 
     public function test_get_details(): void {

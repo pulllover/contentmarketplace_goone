@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Sergey Vidusov <sergey.vidusov@androgogic.com>
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use contentmarketplace_goone\form\general_settings_form;
@@ -36,12 +35,14 @@ if ($create_course_manual === false || $create_course_manual === null || $create
 
 $form = new general_settings_form([
     'create_course_manual' => (int) $create_course_manual,
+    'debug_requests' => (int) $config->get('debug_requests'),
 ]);
 
 $formdata = $form->get_data();
 
 if ($formdata) {
     $config->set('create_course_manual', (int) $formdata->create_course_manual);
+    $config->set('debug_requests', (int) $formdata->debug_requests);
 
     \core\notification::success(get_string('settings_saved', 'contentmarketplace_goone'));
 }

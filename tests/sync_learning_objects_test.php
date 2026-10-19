@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use contentmarketplace_goone\helper;
@@ -114,5 +115,51 @@ class contentmarketplace_goone_sync_learning_objects_test extends testcase {
         self::assertStringContainsString('free', $thrown->getMessage());
         self::assertStringNotContainsString('collection custom', $thrown->getMessage());
         self::assertFalse(get_config('contentmarketplace_goone', 'last_synced_new_content'));
+    }
+
+    /**
+     * Get the sync lock factory. The database record factory is used, because PostgreSQL
+     * advisory locks let one session get the same lock two times.
+     *
+     * @return \core\lock\lock_factory
+     */
+    private function get_lock_factory(): \core\lock\lock_factory {
+        global $CFG;
+        $CFG->lock_factory = '\core\lock\db_record_lock_factory';
+        return \core\lock\lock_config::get_lock_factory('contentmarketplace_goone');
+    }
+
+    public function test_invoke_throws_when_sync_in_progress(): void {
+        $sync = $this->make_configured_sync('custom');
+        $lock = $this->get_lock_factory()->get_lock('sync_learning_objects', 0);
+        self::assertNotFalse($lock);
+
+        try {
+            $sync->invoke();
+            self::fail('The sync ran while a different sync held the lock');
+        } catch (moodle_exception $e) {
+            self::assertSame('error:sync_in_progress', $e->errorcode);
+        } finally {
+            $lock->release();
+        }
+
+        self::assertFalse(get_config('contentmarketplace_goone', 'last_synced_new_content'));
+    }
+
+    public function test_invoke_releases_lock_after_failed_run(): void {
+        // The "free" collection has no mocked listing endpoint, so the run fails.
+        $sync = $this->make_configured_sync('free');
+        $lockfactory = $this->get_lock_factory();
+
+        try {
+            $sync->invoke();
+            self::fail('The sync run did not fail');
+        } catch (moodle_exception $e) {
+            self::assertSame('error:sync_failed', $e->errorcode);
+        }
+
+        $lock = $lockfactory->get_lock('sync_learning_objects', 0);
+        self::assertNotFalse($lock);
+        $lock->release();
     }
 }

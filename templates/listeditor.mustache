@@ -26,7 +26,7 @@
         {{#items}}
         <li id="{{id}}_{{oid}}">
             {{text}} <input type="hidden" name="{{name}}[]" value="{{oid}}"/>
-            <a href="#">{{#str}}remove{{/str}}</a><span class="tf_loading" style="display: none;">{{#pix}} i/loading, core, loading, totara_core{{/pix}}</span>
+            <a href="#">{{#str}}remove{{/str}}<span class="sr-only"> {{text}}</span></a><span class="tf_loading" style="display: none;">{{#pix}} i/loading, core, loading, totara_core{{/pix}}</span>
         </li>
         {{/items}}
     </ul>

@@ -108,30 +108,47 @@ if ($form->is_cancelled()) {
             $section = 1;
         }
 
-        $container = \container_course\course_helper::create_course($coursedata);
-        $course = course_get_format($container->id)->get_course();
-        helper::enrol_course_creator($course);
-
         $api = new \contentmarketplace_goone\api();
 
-        // Add course image using the first Learning Object.
-        $firstlo = $api->get_learning_object(reset($selection));
-        if (!empty($firstlo->core->image->value)) {
-            helper::add_course_image_from_url($course->id, $firstlo->core->image->value);
+        // Download the content from Go1 before the database transaction starts.
+        $learningobjects = [];
+        $titles = [];
+        $packagefiles = [];
+        foreach ($selection as $id) {
+            $learningobjects[$id] = $api->get_learning_object($id);
+            $titles[$id] = clean_param($learningobjects[$id]->core->title, !empty($CFG->formatstringstriptags) ? PARAM_TEXT : PARAM_CLEANHTML);
+            $packagefiles[$id] = helper::fetch_scorm_package($titles[$id], $id, $api);
         }
 
-        foreach ($selection as $id) {
-            $learningobject = $api->get_learning_object($id);
-            $title = clean_param($learningobject->core->title, !empty($CFG->formatstringstriptags) ? PARAM_TEXT : PARAM_CLEANHTML);
-            $descriptionhtml = clean_text((string) ($learningobject->core->description ?? ''));
+        // Create the course with all its SCORM modules, or nothing.
+        $transaction = $DB->start_delegated_transaction();
+        try {
+            $container = \container_course\course_helper::create_course($coursedata);
+            $course = course_get_format($container->id)->get_course();
+            helper::enrol_course_creator($course);
 
-            $learning_object_model = learning_object::load_by_external_id($id, $api);
-            $module = helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, $section, $learning_object_model, $api);
+            foreach ($selection as $id) {
+                $learningobject = $learningobjects[$id];
+                $descriptionhtml = clean_text((string) ($learningobject->core->description ?? ''));
 
-            // A single activity course completes when its one SCORM activity completes.
-            if ($data->create == create_course_form::CREATE_COURSE_SINGLE_ACTIVITY) {
-                helper::set_single_activity_completion($course, $module->get_id());
+                $learning_object_model = learning_object::load_by_external_id($id, $api);
+                $module = helper::add_scorm_module($course, $titles[$id], $packagefiles[$id], $descriptionhtml, $learningobject->playback_behavior->assessable, $section, $learning_object_model);
+
+                // A single activity course completes when its one SCORM activity completes.
+                if ($data->create == create_course_form::CREATE_COURSE_SINGLE_ACTIVITY) {
+                    helper::set_single_activity_completion($course, $module->get_id());
+                }
             }
+
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            $transaction->rollback($e);
+        }
+
+        // Add course image using the first Learning Object.
+        $firstlo = $learningobjects[reset($selection)];
+        if (!empty($firstlo->core->image->value)) {
+            helper::add_course_image_from_url($course->id, $firstlo->core->image->value);
         }
 
         \core\notification::success(get_string('coursecreated', 'contentmarketplace_goone'));
@@ -148,38 +165,60 @@ if ($form->is_cancelled()) {
 
     } else {
         $api = new \contentmarketplace_goone\api();
-        $courselinkshtml = [];
+
+        // Download the content from Go1 before the database transaction starts.
+        $learningobjects = [];
+        $titles = [];
+        $packagefiles = [];
         foreach ($selection as $id) {
-            $coursedata = new \stdClass();
-            $coursedata->category = $data->{'category_' . $id};
-            $coursedata->fullname = $data->{'fullname_' . $id};
-            $coursedata->shortname = $data->{'shortname_' . $id};
-            $coursedata->visible = true;
-            $coursedata->audiencevisible = (int) get_config('moodlecourse', 'visiblelearning');
-            helper::apply_course_completion_defaults($coursedata);
+            $learningobjects[$id] = $api->get_learning_object($id);
+            $titles[$id] = clean_param($learningobjects[$id]->core->title, !empty($CFG->formatstringstriptags) ? PARAM_TEXT : PARAM_CLEANHTML);
+            $packagefiles[$id] = helper::fetch_scorm_package($titles[$id], $id, $api);
+        }
 
-            $coursedata->format = 'singleactivity';
-            $coursedata->activitytype = 'scorm';
-            $container = \container_course\course_helper::create_course($coursedata);
-            $course = course_get_format($container->id)->get_course();
-            helper::enrol_course_creator($course);
+        // Create all the courses, or none of them.
+        $courses = [];
+        $courselinkshtml = [];
+        $transaction = $DB->start_delegated_transaction();
+        try {
+            foreach ($selection as $id) {
+                $coursedata = new \stdClass();
+                $coursedata->category = $data->{'category_' . $id};
+                $coursedata->fullname = $data->{'fullname_' . $id};
+                $coursedata->shortname = $data->{'shortname_' . $id};
+                $coursedata->visible = true;
+                $coursedata->audiencevisible = (int) get_config('moodlecourse', 'visiblelearning');
+                helper::apply_course_completion_defaults($coursedata);
 
-            $learningobject = $api->get_learning_object($id);
-            $title = clean_param($learningobject->core->title, !empty($CFG->formatstringstriptags) ? PARAM_TEXT : PARAM_CLEANHTML);
-            $descriptionhtml = clean_text((string) ($learningobject->core->description ?? ''));
+                $coursedata->format = 'singleactivity';
+                $coursedata->activitytype = 'scorm';
+                $container = \container_course\course_helper::create_course($coursedata);
+                $course = course_get_format($container->id)->get_course();
+                helper::enrol_course_creator($course);
 
-            // Add course image using the Learning Object.
-            if (!empty($learningobject->core->image->value)) {
-                helper::add_course_image_from_url($course->id, $learningobject->core->image->value);
+                $learningobject = $learningobjects[$id];
+                $descriptionhtml = clean_text((string) ($learningobject->core->description ?? ''));
+
+                $learning_object_model = learning_object::load_by_external_id($id, $api);
+                $module = helper::add_scorm_module($course, $titles[$id], $packagefiles[$id], $descriptionhtml, $learningobject->playback_behavior->assessable, 0, $learning_object_model);
+
+                // A single activity course completes when its one SCORM activity completes.
+                helper::set_single_activity_completion($course, $module->get_id());
+
+                $courses[$id] = $course;
+                $courselinkshtml[] = s($coursedata->fullname);
             }
 
-            $learning_object_model = learning_object::load_by_external_id($id, $api);
-            $module = helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, 0, $learning_object_model, $api);
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            $transaction->rollback($e);
+        }
 
-            // A single activity course completes when its one SCORM activity completes.
-            helper::set_single_activity_completion($course, $module->get_id());
-
-            $courselinkshtml[] = s($coursedata->fullname);
+        // Add course images using the Learning Objects.
+        foreach ($courses as $id => $course) {
+            if (!empty($learningobjects[$id]->core->image->value)) {
+                helper::add_course_image_from_url($course->id, $learningobjects[$id]->core->image->value);
+            }
         }
 
         $messagehtml = html_writer::tag('p', get_string('coursecreatedx', 'contentmarketplace_goone', count($selection)));

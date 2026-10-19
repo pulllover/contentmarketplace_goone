@@ -1,9 +1,7 @@
 <?php
 
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +18,10 @@
  *
  * Helper class related to webhook.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace contentmarketplace_goone;
@@ -364,7 +364,7 @@ class webhook {
 
         // Try email as-is.
         if (empty($user)) {
-            $user = $db->get_record('user', array('email' => $email) + $active);
+            $user = self::get_unique_active_user_by_email($email);
         }
 
         if (empty($user)) {
@@ -373,10 +373,7 @@ class webhook {
 
         // Try email from external_user_id.
         if (empty($user) && !empty($username)) {
-            $user = $db->get_record('user', array('email' => $username) + $active);
-        }
-        if (empty($user) && !empty($username)) {
-            $user = $db->get_record('user', array('username' => $username) + $active);
+            $user = self::get_unique_active_user_by_email($username);
         }
 
         // Try the user part of the email as username.
@@ -402,6 +399,30 @@ class webhook {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get the active Totara user with the given email, compared case-insensitively.
+     *
+     * Returns false when the email is empty, or when no user or more than one user has the email.
+     *
+     * @param string $email
+     *
+     * @return \stdClass|false
+     */
+    private static function get_unique_active_user_by_email(string $email): \stdClass|false {
+        if (trim($email) === '') {
+            return false;
+        }
+
+        $db = builder::get_db();
+
+        $select = $db->sql_equal('email', ':email', false) . ' AND deleted = 0 AND suspended = 0';
+        $users = $db->get_records_select('user', $select, ['email' => $email]);
+        if (count($users) !== 1) {
+            return false;
+        }
+        return reset($users);
     }
 
 

@@ -159,14 +159,22 @@ final class mock_curl {
                 ])
                 => '/learning-objects/GET-listing-filtered.json',
 
-                // Select-all id listing, first page of the custom collection.
+                // Select-all id listing of the custom collection: 3 items on two pages.
                 self::url('GET', '/learning-objects', [
                     'collection' => 'custom',
                     'offset' => 0,
-                    'limit' => 10,
+                    'limit' => api::MAX_PAGE_SIZE,
                     'type' => ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'],
                 ])
                 => '/learning-objects/GET-listing-small-v3.json',
+
+                self::url('GET', '/learning-objects', [
+                    'collection' => 'custom',
+                    'offset' => api::MAX_PAGE_SIZE,
+                    'limit' => api::MAX_PAGE_SIZE,
+                    'type' => ['course', 'document', 'link', 'interactive', 'text', 'video', 'audio'],
+                ])
+                => '/learning-objects/GET-listing-small-v3-page2.json',
 
                 self::url('GET', '/user-accounts/501')
                 => '/user-accounts/501/GET.json',

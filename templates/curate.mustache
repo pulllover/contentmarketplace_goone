@@ -1,8 +1,6 @@
 {{!
    This file is part of Totara Learn
 
-   Copyright (C) 2018 onwards Totara Learning Solutions LTD
-
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 3 of the License, or
@@ -10,17 +8,20 @@
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See  the
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-   @package contentmarketplace_goone
+   @package    contentmarketplace_goone
+   @copyright  2026 onwards Androgogic Pty Ltd
+   @author     Kirill Astashov <kirill.astashov@androgogic.com>
+   @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 
-<div id="go1syncresult" style="display:none;">
-    <div class="alert alert-danger alert-with-icon  fade in " role="alert">
+<div id="go1syncresult" role="alert">
+    <div class="alert alert-danger alert-with-icon  fade in " style="display:none;">
         <div class="alert-icon"><span aria-hidden="true" data-flex-icon="core|notification-error"
         class="flex-icon ft-fw ft tfont-var-x-circle-fill ft-size-200"
         ></span></div>
@@ -38,6 +39,7 @@
 </div>
 
 <iframe id="go1-content-hub-go1embed"
+    title="{{#str}} content_hub, contentmarketplace_goone {{/str}}"
     src="https://embedding.go1.com/content-hub?one_time_token={{ ott }}"
     style="width: 100%; height: 100%; border: 0px; min-height:800px;">
 </iframe>

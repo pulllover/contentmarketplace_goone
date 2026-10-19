@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace contentmarketplace_goone\form;
@@ -28,6 +28,7 @@ use contentmarketplace_goone\helper;
 use totara_form\form\element\radios;
 use totara_form\form\element\static_html;
 use totara_form\form\element\text;
+use totara_form\form\element\yesno;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -66,6 +67,12 @@ class general_settings_form extends \totara_form\form {
         ));
         $create_course_manual->set_attribute('required', true);
         $create_course_manual->add_help_button('create_course_manual', 'contentmarketplace_goone');
+
+        $debug_requests = $this->model->add(new yesno(
+            'debug_requests',
+            get_string('debug_requests', 'contentmarketplace_goone')
+        ));
+        $debug_requests->add_help_button('debug_requests', 'contentmarketplace_goone');
 
         $this->model->add_action_buttons(false);
     }

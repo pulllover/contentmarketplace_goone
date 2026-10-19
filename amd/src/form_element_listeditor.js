@@ -29,6 +29,13 @@
 define(['jquery', 'totara_form/form'], function($, Form) {
 
     /**
+     * Id of the element that removed an item. The form reloads after a removal,
+     * and the new instance of this element moves focus back into the list.
+     * @type {?string}
+     */
+    var focusAfterReload = null;
+
+    /**
      * Listeditor constructor
      *
      * @class
@@ -78,6 +85,10 @@ define(['jquery', 'totara_form/form'], function($, Form) {
             $('a', container).hide();
         }
         this.container = container;
+        if (focusAfterReload === id) {
+            focusAfterReload = null;
+            this.focusList();
+        }
         done();
     };
 
@@ -98,7 +109,20 @@ define(['jquery', 'totara_form/form'], function($, Form) {
         var row = $(event.target).closest('li');
         row.addClass('tf_update_pending');
         row.find('input').remove();
+        focusAfterReload = this.id;
         this.changed();
+    };
+
+    /**
+     * Moves focus to the first visible "Remove" link, or to the list if all links are hidden.
+     */
+    ListeditorElement.prototype.focusList = function() {
+        var link = this.container.find('li a:visible').first();
+        if (link.length) {
+            link.trigger('focus');
+        } else {
+            this.container.find('ul').attr('tabindex', '-1').trigger('focus');
+        }
     };
 
 

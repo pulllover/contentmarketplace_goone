@@ -1,7 +1,5 @@
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
@@ -34,7 +34,7 @@ define(['jquery', 'core/str', 'core/config'], function ($, Str, mdlcfg) {
             var syncingStr;
             var unknownerrorStr = '';
 
-            $('#go1syncresult').hide();
+            $('#go1syncresult .alert').hide();
 
             Str.get_strings([
                 {
@@ -67,15 +67,18 @@ define(['jquery', 'core/str', 'core/config'], function ($, Str, mdlcfg) {
                     $('#go1syncresult .alert').removeClass('alert-success').addClass('alert-danger');
                     $('#go1syncresult .flex-icon').removeClass('tfont-var-check-circle-fill').addClass('tfont-var-x-circle-fill');
                 }
+                // The live region announces the message only when it is set after the alert shows.
+                $('#go1syncresult .alert').show();
                 $('#go1syncresult .alert-message').text(message || unknownerrorStr);
-                $('#go1syncresult').show();
+                // The button lost focus while it was disabled.
+                context.trigger('focus');
             };
 
             context.on('click', function (e) {
                 e.preventDefault();
                 context.prop('disabled', true);
                 context.attr('value', syncingStr);
-                $('#go1syncresult').hide();
+                $('#go1syncresult .alert').hide();
                 $('#go1syncresult .alert-message').text('');
                 $.post({
                     url: mdlcfg.wwwroot + "/totara/contentmarketplace/contentmarketplaces/goone/ajax/sync_content.php",

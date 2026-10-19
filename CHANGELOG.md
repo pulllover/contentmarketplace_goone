@@ -4,48 +4,96 @@
 
 Baseline: Totara core 20.0.0, plugin version 2026011500.
 Release: version 2.0.0, plugin version 2026090400.
-Supported Totara versions: Totara 20.0.0+
+Compatible Totara versions: Totara 20.0.0 and later.
 
 ## Platform
 
-- **Go1 API v3.** All calls now go to `gateway.go1.com` with the `Api-Version: 2025-01-01` header. The v2 account, configuration and collection-item endpoints are gone. New endpoints: user-accounts (search, get, create, update, login), enrollments, webhooks, and scrolled learning-object listing for large collections.
-- **Collections renamed** from all / subscribed / collection to free / subscribe / custom. An upgrade step maps the stored content access setting.
-- **OAuth changes.** Authorization requests a wider scope set (`lo.read lo.write enrollment.read portal.read portal.write user.read user.write user.login webhook.read webhook.write`). Token refresh falls back to client credentials when the refresh token is rejected. Missing scopes raise a dedicated exception with guidance to contact Go1 support.
+- **Go1 API v3.** All calls go to `gateway.go1.com` with the `Api-Version: 2025-01-01` header. The plugin does not use the v2 account, configuration and collection-item endpoints. New endpoints:
+  - User accounts: search, get, create, update and login.
+  - Enrollments.
+  - Webhooks.
+  - Learning-object list with scroll, for large collections.
+- **New collection names.** The old names "all", "subscribed" and "collection" are now "free", "subscribe" and "custom". An upgrade step changes the stored content access setting to the new names.
+- **OAuth changes.**
+  - Authorisation asks for more scopes: `lo.read lo.write enrollment.read portal.read portal.write user.read user.write user.login webhook.read webhook.write`.
+  - If Go1 rejects the refresh token, the token refresh uses the client credentials.
+  - If a scope is missing, the plugin shows a special error. The error tells the user to speak to Go1 support.
 
 ## New functionality
 
-- **Content curation page** (`curate.php`). Embeds the Go1 Content Hub in an iframe using a one-time token. The Totara user is matched to a Go1 account by the mapping table or by email, created if missing, and granted the Content administrator role. Includes a "Sync content" button that runs the custom-collection sync via AJAX (Free and Subscribed collections are synced by the scheduled task only).
-- **Content sync** (new `sync_learning_objects` sync action, run by the core marketplace scheduled task `\totara_contentmarketplace\task\sync_task` or by the button). Pulls published learning objects from the selected collections, optionally filtered by region relevance, and creates courses automatically. Course category, single or multi activity course type, and shortname strategy are configurable. Courses receive the Go1 image, a generated description (overview, learning outcomes, topics, skills covered, duration), a SCORM module, and completion criteria.
-- **Retired content processing.** The sync also detects learning objects in retired state and acts on courses that use them. Configurable actions on retirement: course image banner ("Leaving on ..."), summary notice, move to category, hide. Actions on removal: move, hide. Scope is either the sync category only or the whole site. Actions are tracked per learning object so each runs once.
-- **Webhook** (`payload.php`). Subscribes to `enrollment.complete`, verifies the Go1 signature with a timestamp tolerance, resolves the Go1 user to a Totara user through several matching strategies, and marks the matching SCORM activities complete. Failures are logged to a new table instead of returning HTTP errors. The admin tab shows the webhook, detects configuration drift, and can create or update it.
-- **Add activity to an existing course.** New `create_marketplace_activity` workflow and `activitycreate.php` page with a confirmation step. Enabled on install and on upgrade.
-- **Manual course creation toggle.** The "Add courses from Go1" workflow redirects to the curation page unless manual creation is enabled. Default is disabled for new and upgraded sites. Manual creation applies the same completion defaults as sync.
+- **Content curation page** (`curate.php`).
+  - The page shows the Go1 Content Hub in an iframe. It uses a one-time token.
+  - The plugin finds the Go1 account for the Totara user. It looks in the mapping table first, then it compares the email. If there is no account, the plugin makes one.
+  - The plugin gives the account the Content administrator role.
+  - The "Sync content" button syncs the custom collection through AJAX. Only the scheduled task syncs the Free and Subscribed collections.
+- **Content sync** (new `sync_learning_objects` sync action).
+  - The core marketplace scheduled task `\totara_contentmarketplace\task\sync_task` runs the sync. The "Sync content" button also runs it.
+  - The sync gets the published learning objects from the selected collections. A region relevance filter is optional. The sync then makes the courses automatically.
+  - You can configure the course category, the course type (single activity or multi activity) and the shortname strategy.
+  - Each course gets these items:
+    - The Go1 image.
+    - A description with an overview, learning outcomes, topics, skills, and duration.
+    - A SCORM module.
+    - Completion criteria.
+- **Retired content process.**
+  - The sync finds learning objects in the retired state. Then it does actions on the courses that use them.
+  - Actions for retired content (configurable): a banner on the course image ("Leaving on ..."), a notice in the summary, a move to a category, and hide.
+  - Actions for removed content: move and hide.
+  - The scope is the sync category only or the full site.
+  - The plugin records the actions for each learning object. Thus each action occurs one time only.
+- **Webhook** (`payload.php`).
+  - The webhook subscribes to `enrollment.complete`.
+  - The plugin examines the Go1 signature and the timestamp. The timestamp must be in the permitted tolerance.
+  - The plugin uses different methods to find the Totara user for the Go1 user.
+  - The plugin records the completion of the related SCORM activities.
+  - If an error occurs, the plugin writes it to a new log table. It does not send an HTTP error.
+  - The admin tab shows the webhook. It finds differences in the webhook configuration. It can create or update the webhook.
+- **Add an activity to a course.** New `create_marketplace_activity` workflow and `activitycreate.php` page with a confirmation step. The install and the upgrade enable this workflow.
+- **Manual course creation setting.**
+  - If manual creation is disabled, the "Add courses from Go1" workflow opens the curation page.
+  - The default is disabled for new sites and upgraded sites.
+  - Manual creation uses the same completion defaults as the sync.
 
-## Amended functionality
+## Changed functionality
 
-- **Settings page** rebuilt as a tabbed admin page with General, Content sync, Retired content, Content access and Webhook tabs. The Client ID is displayed in General.
-- **Setup wizard** dropped the account stage. Content access is a multi-select of collections, defaulting to custom. After setup the user lands on the marketplaces list rather than the explorer.
-- **Explorer** filters moved to v3 facets: Tags became Topics, providers and languages read from the new facet shapes, and the availability filter offers free, subscribe and custom according to content access settings. Multi-select of learning objects was removed in favour of single selection.
-- **Explore marketplace workflow** opens the curation page instead of the explorer.
-- **Course creation** uses the container course helper, applies the audience visibility default, and ticks both Passed and Completed for SCORM completion.
-- **Learning object model** reads the v3 field layout (`core.title`, `core.image.value`, `relevance.language`).
-- **REST client** gained PATCH support and configurable timeouts.
+- **Settings page.** It is now an admin page with these tabs: General, Content sync, Retired content, Content access and Webhook. The General tab shows the Client ID.
+- **Setup wizard.**
+  - The account step is removed.
+  - Content access is a multi-select list of collections. The default is "custom".
+  - After setup, the wizard opens the marketplaces list, not the explorer.
+- **Explorer.**
+  - The filters use the v3 facets. "Tags" is now "Topics".
+  - The provider and language filters use the new facet structure.
+  - The availability filter shows free, subscribe and custom, as set in the content access settings.
+  - You can select one learning object only. The multi-select function is removed.
+- **"Explore marketplace" workflow.** It opens the curation page, not the explorer.
+- **Course creation.**
+  - It uses the container course helper.
+  - It applies the default audience visibility.
+  - For SCORM completion, it selects both Passed and Completed.
+- **Learning object model.** It reads the v3 fields (`core.title`, `core.image.value`, `relevance.language`).
+- **REST client.** It can send PATCH requests. You can configure the timeouts.
 
-## Retired functionality
+## Removed functionality
 
-- Account and plan display (`account.php`, account template, `account_plan_*` config values) and the standalone content settings page.
-- Curating Go1 collections through the API. The collection class now throws and directs users to the embedded hub.
-- Pay-per-seat sync with Go1 configuration.
-- Behat features for course creation, filters and OAuth, along with the v2 fixture set. Replaced by PHPUnit suites covering API, OAuth, search, helper, sync, webhook, embed, upgrade and manual course creation.
+- The account and plan display: `account.php`, the account template and the `account_plan_*` config values.
+- The standalone content settings page.
+- Curation of Go1 collections through the API. The collection class now throws an exception. The exception tells users to use the Go1 Content Hub in Totara.
+- Pay-per-seat sync with the Go1 configuration.
+- Behat features for course creation, filters and OAuth, and the v2 fixture set. New PHPUnit tests replace them. These tests are for the API, OAuth, search, helper, sync, webhook, embed, upgrade and manual course creation.
 
-## New permission
+## New capability
 
-- `contentmarketplace/goone:curatecontent` (system context, write, granted to the Manager archetype). Required for the curation page, and for the display of the "Manage available content" button (manual course creation flow).
+- `contentmarketplace/goone:curatecontent` (system context, write). The Manager archetype has this capability. A user must have this capability for these items:
+  - The curation page.
+  - The "Manage available content" button (manual course creation).
 
 ## Database
 
-- New tables `marketplace_goone_user_map` (Totara user to Go1 user, unique per user) and `marketplace_goone_webhook_logs`.
-- `marketplace_goone_learning_object`: added columns`retired_time`, `retired_actioned`, `removed_time` and `removed_actioned`.
+- New tables:
+  - `marketplace_goone_user_map`: the Totara user and the related Go1 user. One row for each Totara user.
+  - `marketplace_goone_webhook_logs`.
+- `marketplace_goone_learning_object`: new columns `retired_time`, `retired_actioned`, `removed_time` and `removed_actioned`.
 
 ## New config keys
 

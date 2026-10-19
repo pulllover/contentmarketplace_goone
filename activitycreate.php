@@ -1,8 +1,6 @@
 <?php
-/*
+/**
  * This file is part of Totara Learn
- *
- * Copyright (C) 2018 onwards Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Kirill Astashov <kirill.astashov@androgogic.com>
- * @package contentmarketplace_goone
+ * @package    contentmarketplace_goone
+ * @copyright  2026 onwards Androgogic Pty Ltd
+ * @author     Kirill Astashov <kirill.astashov@androgogic.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require('../../../../config.php');
@@ -124,7 +124,8 @@ require_sesskey();
 $descriptionhtml = clean_text($learningobject->core->description);
 $learning_object_model = learning_object::load_by_external_id($id, $api);
 $sectionno = $db->get_field('course_sections', 'section', ['id' => $section], MUST_EXIST);
-helper::add_scorm_module($course, $title, $id, $descriptionhtml, $learningobject->playback_behavior->assessable, $sectionno, $learning_object_model, $api);
+$packagefile = helper::fetch_scorm_package($title, $id, $api);
+helper::add_scorm_module($course, $title, $packagefile, $descriptionhtml, $learningobject->playback_behavior->assessable, $sectionno, $learning_object_model);
 
 \core\notification::success(get_string('activitycreatedx', 'contentmarketplace_goone', $title));
 
