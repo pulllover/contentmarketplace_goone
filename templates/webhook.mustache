@@ -20,6 +20,8 @@
    @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 }}
 
+{{{allow_accounts_same_email_warning}}}
+
 <p>{{#str}}webhook_desc, contentmarketplace_goone{{/str}}</p>
 
 {{#webhook_exists}}
@@ -33,7 +35,7 @@
     <div class="singlebutton">
         <form method="post" action="{{update_webhook_url}}" id="go1updatewebhook">
             <div>
-                <input type="submit" value="{{#str}}webhook_update, contentmarketplace_goone{{/str}}" />
+                <input type="submit" value="{{#str}}webhook_update, contentmarketplace_goone{{/str}}"{{#webhook_disabled}} disabled{{/webhook_disabled}} />
                 <input type="hidden" name="tab" value="webhook" />
                 <input type="hidden" name="action" value="update" />
                 <input type="hidden" name="sesskey" value="{{sesskey}}" />
@@ -46,7 +48,7 @@
 <div class="singlebutton">
     <form method="post" action="{{create_webhook_url}}" id="go1createwebhook">
         <div>
-            <input type="submit" value="{{#str}}webhook_create, contentmarketplace_goone{{/str}}" />
+            <input type="submit" value="{{#str}}webhook_create, contentmarketplace_goone{{/str}}"{{#webhook_disabled}} disabled{{/webhook_disabled}} />
             <input type="hidden" name="tab" value="webhook" />
             <input type="hidden" name="action" value="create" />
             <input type="hidden" name="sesskey" value="{{sesskey}}" />

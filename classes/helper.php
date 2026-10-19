@@ -60,6 +60,28 @@ class helper {
     }
 
     /**
+     * Returns a warning notification when the site setting "Allow accounts with same email" is on.
+     *
+     * @return string|null The notification HTML, or null when the setting is off
+     */
+    public static function get_allow_accounts_same_email_warning(): ?string {
+        global $CFG, $OUTPUT;
+
+        if (empty($CFG->allowaccountssameemail)) {
+            return null;
+        }
+
+        $link = \html_writer::link(
+            new \moodle_url('/admin/settings.php', ['section' => 'manageauths']),
+            get_string('allowaccountssameemail', 'core_auth')
+        );
+        return $OUTPUT->notification(
+            get_string('warning:allowaccountssameemail', 'contentmarketplace_goone', $link),
+            \core\output\notification::NOTIFY_WARNING
+        );
+    }
+
+    /**
      * Check this GO1 account can access the learning object.
      * (Used to guard against unexpected learning objects being used to create content.)
      *

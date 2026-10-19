@@ -47,4 +47,9 @@ if ($formdata) {
     \core\notification::success(get_string('settings_saved', 'contentmarketplace_goone'));
 }
 
+$allow_accounts_same_email_warning = helper::get_allow_accounts_same_email_warning();
+if ($allow_accounts_same_email_warning !== null) {
+    echo $allow_accounts_same_email_warning;
+}
+
 echo $form->render();

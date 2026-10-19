@@ -22,6 +22,7 @@
  */
 
 use contentmarketplace_goone\api;
+use contentmarketplace_goone\helper;
 use contentmarketplace_goone\webhook;
 
 defined('MOODLE_INTERNAL') || die();
@@ -38,6 +39,11 @@ if (empty($oauth_client_id)) {
 }
 
 $api = new api();
+
+$allow_accounts_same_email_warning = helper::get_allow_accounts_same_email_warning();
+if ($allow_accounts_same_email_warning !== null) {
+    $action = '';
+}
 
 switch ($action) {
     case 'create':
@@ -65,6 +71,8 @@ $webhook_exists = ($webhook !== false);
 $data = new \stdClass();
 $data->sesskey = sesskey();
 $data->webhook_exists = $webhook_exists;
+$data->allow_accounts_same_email_warning = $allow_accounts_same_email_warning;
+$data->webhook_disabled = ($allow_accounts_same_email_warning !== null);
 if ($webhook_exists) {
     $data->webhook_data = json_encode($webhook, JSON_PRETTY_PRINT);
     $data->webhook_data = preg_replace('/\"secret_key\"\: \"[^"]+\"/', '"secret_key": "***********"', $data->webhook_data);

@@ -227,6 +227,7 @@ $string['synccontent'] = 'Sync custom library';
 $string['syncing'] = 'Syncing...';
 $string['unknownlanguage'] = 'Unknown';
 $string['userdataitemuser_map'] = 'Go1 user account mapping';
+$string['warning:allowaccountssameemail'] = 'Webhook cannot update completions if multiple user accounts share the same email address. Uncheck {$a} to use the webhook.';
 $string['warningdisablemarketplace:body:html'] = '<p>You are about to disable the Go1 content marketplace. If you proceed, items from the marketplace will no longer be available to course creators for inclusion in newly created courses.</p>
 <p>Users who have previously already started Go1 activities will continue to have access to that content, but they will not be able to start new Go1 activities.</p>
 <p>Are you sure you wish to proceed?</p>';
